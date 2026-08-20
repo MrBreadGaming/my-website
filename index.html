@@ -1,10 +1,150 @@
 <!DOCTYPE html>
 <html>
-<body style="background-color: lightblue;">
+<head>
+<title>Brownie Bakery</title>
 
-<h1 style="font-size: 50px;">My Awesome Website</h1>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #dff1d8;
+    overflow: hidden;
+}
 
-<img src="Screenshot 2026-08-16 125710.png" width="500">
+#game {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+#topbar {
+    height: 60px;
+    background: #8b5a3c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+#bakery {
+    position: absolute;
+    left: 8%;
+    top: 15%;
+    width: 84%;
+    height: 70%;
+    background: #f5d7a1;
+    border: 8px solid #70452d;
+    border-radius: 20px;
+}
+
+.object {
+    position: absolute;
+    text-align: center;
+    user-select: none;
+}
+
+#ingredients {
+    left: 5%;
+    top: 10%;
+}
+
+#bowl {
+    left: 38%;
+    top: 15%;
+    font-size: 70px;
+    cursor: pointer;
+}
+
+#oven {
+    right: 8%;
+    top: 15%;
+    font-size: 70px;
+}
+
+#cooling {
+    left: 38%;
+    bottom: 15%;
+    font-size: 70px;
+}
+
+#shop {
+    right: 8%;
+    bottom: 10%;
+    font-size: 70px;
+    cursor: pointer;
+}
+
+.item {
+    background: #fff4df;
+    padding: 10px;
+    margin: 8px;
+    border-radius: 10px;
+    cursor: grab;
+    border: 2px solid #b88962;
+}
+
+#message {
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 12px 20px;
+    border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div id="topbar">
+        <b>🍫 Brownie Bakery</b>
+        <span>💰 $10</span>
+    </div>
+
+    <div id="bakery">
+
+        <div id="ingredients" class="object">
+            <b>Ingredients</b>
+
+            <div class="item">🌾 Flour</div>
+            <div class="item">🥚 Egg</div>
+            <div class="item">🧈 Butter</div>
+            <div class="item">🍫 Cocoa</div>
+        </div>
+
+        <div id="bowl" class="object">
+            🥣
+            <div>Mixing Bowl</div>
+        </div>
+
+        <div id="oven" class="object">
+            🔥
+            <div>Oven</div>
+        </div>
+
+        <div id="cooling" class="object">
+            ❄️
+            <div>Cooling Rack</div>
+        </div>
+
+        <div id="shop" class="object">
+            🏪
+            <div>Shop</div>
+        </div>
+
+    </div>
+
+    <div id="message">
+        Welcome to your little brownie bakery! 🍫
+    </div>
+
+</div>
 
 </body>
 </html>
