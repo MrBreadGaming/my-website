@@ -1,1727 +1,1964 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cozy Sheepie Bakery</title>
-    <!-- Vector Asset Definitions (Inline SVGs for high quality & smooth performance) -->
-    <style>
-        .svg-defs { display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brownie Corner</title>
+
+<style>
+
+/* =========================================================
+   BROWNIE CORNER
+   COMPLETE REWRITTEN VERSION
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Courier New", monospace;
+    image-rendering: pixelated;
+}
+
+body {
+    background: #d8c3a4;
+    color: #4b3024;
+}
+
+/* =========================================================
+   MAIN GAME
+   ========================================================= */
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    min-width: 900px;
+    min-height: 600px;
+    overflow: hidden;
+    background: #c8ad85;
+}
+
+/* =========================================================
+   WALL
+   ========================================================= */
+
+.wall {
+    position: absolute;
+    inset: 0 0 42% 0;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(116,82,54,0.045) 0px,
+            rgba(116,82,54,0.045) 2px,
+            transparent 2px,
+            transparent 46px
+        ),
+        linear-gradient(
+            90deg,
+            #e7d3b2,
+            #f0dfc2,
+            #e7d3b2
+        );
+
+    border-bottom: 8px solid #8b6348;
+}
+
+/* =========================================================
+   FLOOR
+   ========================================================= */
+
+.floor {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 42%;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #b18a64 0px,
+            #b18a64 34px,
+            #a47d5b 34px,
+            #a47d5b 38px
+        );
+
+    border-top: 5px solid #8b6449;
+}
+
+.floor::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 105px,
+            rgba(67,42,28,0.08) 105px,
+            rgba(67,42,28,0.08) 109px
+        );
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.topbar {
+    position: absolute;
+    z-index: 100;
+
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: min(94%, 1200px);
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    background: #f8e9cc;
+
+    border: 4px solid #74513e;
+
+    box-shadow:
+        0 5px 0 #573a2c,
+        0 10px 20px rgba(54,35,24,0.22);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.money {
+    min-width: 145px;
+
+    padding: 9px 15px;
+
+    text-align: center;
+
+    background: #fff4da;
+
+    border: 3px solid #8c654b;
+
+    box-shadow: 3px 3px 0 #654535;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    transition: transform 0.15s;
+}
+
+.money.bump {
+    animation: moneyBump 0.35s ease;
+}
+
+@keyframes moneyBump {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.14);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+    font-family: inherit;
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   SHOP BUTTON
+   ========================================================= */
+
+#shopButton {
+    position: absolute;
+    z-index: 110;
+
+    right: 22px;
+    top: 95px;
+
+    width: 120px;
+    height: 44px;
+
+    background: #f1d09a;
+
+    border: 4px solid #674531;
+
+    box-shadow: 4px 4px 0 #4d3023;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s,
+        background 0.15s;
+}
+
+#shopButton:hover {
+    transform: translateY(-2px);
+    background: #f6dcae;
+}
+
+/* =========================================================
+   RECIPE BUTTON
+   ========================================================= */
+
+#recipeButton {
+    position: absolute;
+    z-index: 110;
+
+    left: 22px;
+    top: 95px;
+
+    width: 125px;
+    height: 56px;
+
+    background: #f7edcf;
+
+    border: 4px solid #806448;
+
+    box-shadow: 4px 4px 0 #604735;
+
+    transform: rotate(-2deg);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s,
+        background 0.15s;
+}
+
+#recipeButton:hover {
+    transform: rotate(-2deg) translateY(-3px);
+    background: #fff5dc;
+}
+
+.recipe-small {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* =========================================================
+   STATIONS
+   ========================================================= */
+
+.station {
+    position: absolute;
+    z-index: 20;
+    user-select: none;
+}
+
+.station-label {
+    position: absolute;
+    z-index: 30;
+
+    top: -31px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    white-space: nowrap;
+
+    padding: 5px 10px;
+
+    background: #f7e8ca;
+
+    border: 3px solid #76513d;
+
+    box-shadow: 3px 3px 0 #573b2d;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table {
+    position: absolute;
+
+    height: 100px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a66e48,
+            #77472f
+        );
+
+    border: 5px solid #573522;
+
+    box-shadow:
+        inset 0 7px 0 rgba(255,255,255,0.11),
+        0 8px 0 #513322,
+        0 12px 18px rgba(40,25,17,0.22);
+
+    transition: transform 0.15s;
+}
+
+.table::before {
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+    right: 10px;
+    top: 13px;
+
+    height: 4px;
+
+    background: rgba(255,218,177,0.16);
+}
+
+.table-leg {
+    position: absolute;
+
+    bottom: -74px;
+
+    width: 22px;
+    height: 74px;
+
+    background: #613b28;
+
+    border: 4px solid #4d2e20;
+}
+
+.table-leg.left {
+    left: 25px;
+}
+
+.table-leg.right {
+    right: 25px;
+}
+
+/* =========================================================
+   MIXING STATION
+   ========================================================= */
+
+#mixStation {
+    left: 6%;
+    top: 42%;
+    width: 315px;
+}
+
+#mixTable {
+    width: 315px;
+}
+
+/* =========================================================
+   BOWL
+   ========================================================= */
+
+.bowl {
+    position: absolute;
+
+    left: 94px;
+    top: -70px;
+
+    width: 126px;
+    height: 76px;
+
+    z-index: 40;
+
+    border-radius: 0 0 60px 60px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff9ec,
+            #e5d5bb
+        );
+
+    border: 5px solid #8c765f;
+
+    box-shadow:
+        inset 0 8px 0 rgba(255,255,255,0.7),
+        5px 7px 0 rgba(65,43,30,0.18);
+
+    cursor: grab;
+
+    transition:
+        transform 0.15s,
+        box-shadow 0.2s;
+}
+
+.bowl:hover {
+    transform: translateY(-3px);
+}
+
+.bowl:active {
+    cursor: grabbing;
+}
+
+.bowl.ready-to-drag {
+    box-shadow:
+        0 0 0 4px rgba(215,169,113,0.45),
+        inset 0 8px 0 rgba(255,255,255,0.7),
+        5px 7px 0 rgba(65,43,30,0.18);
+}
+
+.bowl::before {
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+    top: -11px;
+
+    width: 92px;
+    height: 23px;
+
+    border-radius: 50%;
+
+    background: #5a3527;
+
+    border: 5px solid #8c765f;
+}
+
+.bowl::after {
+    content: "";
+
+    position: absolute;
+
+    left: 42px;
+    bottom: -10px;
+
+    width: 37px;
+    height: 11px;
+
+    background: #d6c5ac;
+
+    border-left: 4px solid #8c765f;
+    border-right: 4px solid #8c765f;
+}
+
+/* =========================================================
+   MIXTURE
+   ========================================================= */
+
+.mixture {
+    position: absolute;
+
+    left: 19px;
+    top: -1px;
+
+    width: 82px;
+    height: 17px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            #70402b,
+            #4c281d
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity 0.3s,
+        transform 0.2s;
+}
+
+.mixture.visible {
+    opacity: 1;
+}
+
+.mixture.mixing {
+    animation: mixtureMix 0.38s infinite;
+}
+
+@keyframes mixtureMix {
+
+    0% {
+        transform:
+            rotate(-3deg)
+            scaleX(1);
+    }
+
+    50% {
+        transform:
+            rotate(3deg)
+            scaleX(0.86);
+    }
+
+    100% {
+        transform:
+            rotate(-3deg)
+            scaleX(1);
+    }
+
+}
+
+/* =========================================================
+   MIX PROGRESS
+   ========================================================= */
+
+.mix-progress {
+    position: absolute;
+
+    left: 72px;
+    bottom: 57px;
+
+    width: 170px;
+    height: 15px;
+
+    background: #543728;
+
+    border: 3px solid #3c281e;
+
+    opacity: 0;
+
+    transition: opacity 0.2s;
+
+    z-index: 50;
+}
+
+.mix-progress.active {
+    opacity: 1;
+}
+
+.mix-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #bd794f,
+            #e3b17c
+        );
+
+    transition: width 0.08s linear;
+}
+
+/* =========================================================
+   INGREDIENTS
+   ========================================================= */
+
+.ingredients {
+    position: absolute;
+
+    left: 14px;
+    bottom: 124px;
+
+    width: 285px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 8px;
+}
+
+.ingredient {
+    position: relative;
+
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f7e5c5;
+
+    border: 3px solid #78533e;
+
+    box-shadow: 3px 3px 0 #5d3d2d;
+
+    cursor: grab;
+
+    transition:
+        transform 0.15s,
+        opacity 0.15s;
+}
+
+.ingredient:hover {
+    transform: translateY(-5px);
+}
+
+.ingredient:active {
+    cursor: grabbing;
+}
+
+.ingredient.used {
+    opacity: 0.35;
+}
+
+.ingredient-icon {
+    position: absolute;
+    top: 5px;
+
+    font-size: 22px;
+}
+
+.ingredient-name {
+    position: absolute;
+
+    bottom: 5px;
+
+    left: 2px;
+    right: 2px;
+
+    font-size: 9px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+/* =========================================================
+   MIX BUTTON
+   ========================================================= */
+
+.mix-button {
+    position: absolute;
+
+    left: 105px;
+    bottom: 12px;
+
+    width: 105px;
+    height: 40px;
+
+    background: #d9a776;
+
+    border: 3px solid #543626;
+
+    box-shadow: 3px 3px 0 #68442f;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 60;
+
+    transition:
+        transform 0.08s,
+        background 0.15s;
+}
+
+.mix-button:hover {
+    background: #e8bc8d;
+}
+
+.mix-button:active,
+.mix-button.holding {
+    transform: translate(2px, 2px);
+
+    box-shadow:
+        1px 1px 0 #68442f;
+
+    background: #c98e5d;
+}
+
+/* =========================================================
+   PAN STATION
+   ========================================================= */
+
+#panStation {
+    left: 35%;
+    top: 42%;
+    width: 215px;
+}
+
+#panTable {
+    width: 215px;
+}
+
+.pan {
+    position: absolute;
+
+    left: 35px;
+    top: -63px;
+
+    width: 145px;
+    height: 72px;
+
+    background: #3c3c3c;
+
+    border: 5px solid #222;
+
+    box-shadow:
+        5px 7px 0 rgba(0,0,0,0.25);
+
+    cursor: grab;
+
+    transition:
+        transform 0.15s;
+}
+
+.pan:hover {
+    transform: translateY(-3px);
+}
+
+.pan:active {
+    cursor: grabbing;
+}
+
+.pan::before {
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+    top: 10px;
+
+    width: 115px;
+    height: 43px;
+
+    background: #3d2119;
+
+    border: 3px solid #171717;
+
+    transition: background 0.3s;
+}
+
+.pan.filled::before {
+    background: #5b3123;
+}
+
+.pan.baked::before {
+    background:
+        linear-gradient(
+            180deg,
+            #633421,
+            #3c1d15
+        );
+}
+
+/* =========================================================
+   OVEN
+   ========================================================= */
+
+#ovenStation {
+    left: 56%;
+    top: 38%;
+    width: 215px;
+}
+
+.oven {
+    position: relative;
+
+    width: 215px;
+    height: 205px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #707070,
+            #414141
+        );
+
+    border: 6px solid #292929;
+
+    box-shadow:
+        inset 0 7px 0 rgba(255,255,255,0.1),
+        7px 9px 0 #34251d;
+}
+
+.oven-top {
+    position: absolute;
+
+    left: 16px;
+    right: 16px;
+    top: 14px;
+
+    height: 35px;
+
+    background: #303030;
+
+    border: 3px solid #1b1b1b;
+}
+
+.oven-display {
+    position: absolute;
+
+    left: 10px;
+    top: 8px;
+
+    color: #e9bb65;
+
+    font-size: 12px;
+}
+
+.bake-button {
+    position: absolute;
+
+    right: 7px;
+    top: 5px;
+
+    width: 75px;
+    height: 25px;
+
+    background: #777;
+
+    color: white;
+
+    border: 2px solid #171717;
+
+    font-size: 9px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.oven-door {
+    position: absolute;
+
+    left: 17px;
+    right: 17px;
+    bottom: 16px;
+
+    height: 115px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(20,20,20,0.9),
+            rgba(50,50,50,0.95)
+        );
+
+    border: 5px solid #1d1d1d;
+}
+
+.oven-window {
+    position: absolute;
+
+    left: 20px;
+    top: 15px;
+    right: 20px;
+    bottom: 20px;
+
+    border: 3px solid #101010;
+
+    background:
+        rgba(20,15,12,0.85);
+}
+
+.oven-light {
+    position: absolute;
+
+    left: 8px;
+    top: 8px;
+
+    width: 9px;
+    height: 9px;
+
+    background: #555;
+}
+
+.oven.baking .oven-light {
+    background: #ffb642;
+
+    box-shadow:
+        0 0 12px #ffb642;
+}
+
+.oven.baking .oven-window {
+    background:
+        rgba(125,49,18,0.65);
+
+    animation:
+        ovenGlow 1s infinite alternate;
+}
+
+@keyframes ovenGlow {
+
+    from {
+        opacity: 0.7;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+/* =========================================================
+   COOLING
+   ========================================================= */
+
+#coolStation {
+    left: 77%;
+    top: 41%;
+    width: 240px;
+}
+
+#coolTable {
+    width: 240px;
+}
+
+.cooling-rack {
+    position: absolute;
+
+    left: 20px;
+    top: -58px;
+
+    width: 200px;
+    height: 48px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #858585 0px,
+            #858585 7px,
+            #4d4d4d 7px,
+            #4d4d4d 13px
+        );
+
+    border: 5px solid #383838;
+
+    box-shadow:
+        4px 6px 0 rgba(0,0,0,0.25);
+}
+
+.cooling-brownie {
+    position: absolute;
+
+    left: 40px;
+    top: -44px;
+
+    width: 120px;
+    height: 36px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #663824,
+            #45251a
+        );
+
+    border: 4px solid #291711;
+
+    z-index: 50;
+
+    opacity: 0;
+
+    transform: translateY(-10px);
+
+    transition:
+        opacity 0.3s,
+        transform 0.3s;
+
+    cursor: grab;
+}
+
+.cooling-brownie.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.cooling-brownie.ready {
+    box-shadow:
+        0 0 0 4px rgba(224,180,116,0.3),
+        0 0 15px rgba(255,220,160,0.45);
+}
+
+/* =========================================================
+   PACKAGING
+   ========================================================= */
+
+#packageStation {
+    left: 31%;
+    bottom: 9%;
+    width: 310px;
+}
+
+#packageTable {
+    width: 310px;
+    height: 90px;
+}
+
+.package-box {
+    position: absolute;
+
+    left: 55px;
+    top: -68px;
+
+    width: 125px;
+    height: 65px;
+
+    background: #d5a96f;
+
+    border: 5px solid #75502f;
+
+    box-shadow:
+        5px 6px 0 rgba(70,45,25,0.25);
+
+    cursor: grab;
+
+    transition:
+        transform 0.2s,
+        background 0.2s;
+}
+
+.package-box:hover {
+    transform: translateY(-3px);
+}
+
+.package-box.empty {
+    opacity: 0.45;
+}
+
+.package-box.filled {
+    opacity: 1;
+    background: #c88f52;
+}
+
+.package-box.sealed {
+    background: #c68d50;
+
+    box-shadow:
+        0 0 0 3px rgba(233,192,132,0.3),
+        5px 6px 0 rgba(70,45,25,0.25);
+}
+
+.package-box::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: #a47948;
+}
+
+.box-brownie {
+    position: absolute;
+
+    left: 15px;
+    top: 17px;
+
+    width: 85px;
+    height: 28px;
+
+    background: #4b291d;
+
+    border: 3px solid #291711;
+
+    opacity: 0;
+
+    transition: opacity 0.2s;
+}
+
+.package-box.filled .box-brownie {
+    opacity: 1;
+}
+
+.package-button {
+    position: absolute;
+
+    right: 40px;
+    bottom: 17px;
+
+    width: 110px;
+    height: 34px;
+
+    background: #e6b77e;
+
+    border: 3px solid #68452f;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   SELLING
+   ========================================================= */
+
+#sellStation {
+    right: 6%;
+    bottom: 9%;
+    width: 250px;
+}
+
+#sellTable {
+    width: 250px;
+    height: 90px;
+}
+
+.cash-register {
+    position: absolute;
+
+    left: 55px;
+    top: -67px;
+
+    width: 135px;
+    height: 70px;
+
+    background: #68716b;
+
+    border: 5px solid #39433e;
+
+    box-shadow:
+        5px 6px 0 rgba(40,35,25,0.25);
+}
+
+.register-screen {
+    position: absolute;
+
+    left: 14px;
+    top: 10px;
+
+    width: 72px;
+    height: 27px;
+
+    background: #b8d6b0;
+
+    border: 3px solid #344035;
+
+    font-size: 11px;
+
+    padding: 5px;
+}
+
+.register-button {
+    position: absolute;
+
+    right: 10px;
+    top: 10px;
+
+    width: 30px;
+    height: 45px;
+
+    background: #c58c61;
+
+    border: 3px solid #573c2b;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+
+#storageStation {
+    left: 5%;
+    bottom: 8%;
+    width: 230px;
+}
+
+.storage {
+    position: relative;
+
+    width: 230px;
+    height: 135px;
+
+    background: #76503b;
+
+    border: 6px solid #4f3427;
+
+    box-shadow:
+        inset 0 8px 0 rgba(255,255,255,0.08),
+        6px 8px 0 #493025;
+}
+
+.storage-title {
+    height: 32px;
+
+    padding: 7px;
+
+    text-align: center;
+
+    background: #f2ddbb;
+
+    border-bottom: 4px solid #624432;
+
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.storage-slots {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 7px;
+
+    padding: 9px;
+}
+
+.slot {
+    height: 35px;
+
+    background: #4e3428;
+
+    border: 3px solid #3b281f;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   TUTORIAL
+   ========================================================= */
+
+#tutorial {
+    position: absolute;
+
+    z-index: 90;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+
+    width: 460px;
+
+    min-height: 70px;
+
+    padding: 14px 20px;
+
+    background: #fff0d2;
+
+    border: 4px solid #76513d;
+
+    box-shadow: 5px 5px 0 #523627;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+#tutorial strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 15px;
+}
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+#notifications {
+    position: absolute;
+
+    z-index: 500;
+
+    right: 20px;
+    bottom: 20px;
+
+    width: 270px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    pointer-events: none;
+}
+
+.notification {
+    padding: 11px 14px;
+
+    background: #fff0d3;
+
+    border: 3px solid #6e4b37;
+
+    box-shadow: 4px 4px 0 #4f3427;
+
+    font-size: 12px;
+
+    animation:
+        notificationIn 0.3s ease;
+}
+
+@keyframes notificationIn {
+
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+}
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+.modal {
+    position: absolute;
+
+    z-index: 1000;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(45,30,22,0.48);
+
+    backdrop-filter: blur(2px);
+}
+
+.modal.open {
+    display: flex;
+
+    animation:
+        fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+.modal-card {
+    position: relative;
+
+    width: 560px;
+
+    max-height: 80vh;
+
+    overflow: auto;
+
+    background: #f8e9c9;
+
+    border: 6px solid #684835;
+
+    box-shadow:
+        9px 10px 0 #40291f,
+        0 20px 50px rgba(0,0,0,0.3);
+
+    padding: 30px;
+
+    animation:
+        cardIn 0.25s ease;
+}
+
+@keyframes cardIn {
+
+    from {
+        transform:
+            scale(0.85)
+            translateY(15px);
+    }
+
+    to {
+        transform:
+            scale(1)
+            translateY(0);
+    }
+
+}
+
+.close {
+    position: absolute;
+
+    right: 12px;
+    top: 10px;
+
+    width: 38px;
+    height: 38px;
+
+    border: 3px solid #684735;
+
+    background: #e8bd91;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.modal-title {
+    text-align: center;
+
+    margin:
+        0 0 20px;
+
+    font-size: 25px;
+}
+
+/* =========================================================
+   RECIPE
+   ========================================================= */
+
+.recipe-layout {
+    display: flex;
+
+    gap: 25px;
+}
+
+.recipe-bowl {
+    position: relative;
+
+    width: 190px;
+    height: 160px;
+
+    flex-shrink: 0;
+
+    background: #eadfcf;
+
+    border: 4px solid #876f56;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.recipe-bowl-shape {
+    width: 125px;
+    height: 75px;
+
+    border-radius:
+        0 0 70px 70px;
+
+    background: #f7f1e4;
+
+    border: 6px solid #8e765d;
+
+    position: relative;
+}
+
+.recipe-bowl-shape::before {
+    content: "";
+
+    position: absolute;
+
+    left: 12px;
+    top: -13px;
+
+    width: 88px;
+    height: 23px;
+
+    border-radius: 50%;
+
+    background: #4a291e;
+
+    border: 5px solid #8e765d;
+}
+
+.recipe-steps {
+    flex: 1;
+}
+
+.recipe-steps h3 {
+    margin-top: 0;
+}
+
+.recipe-steps ol {
+    margin: 0;
+
+    padding-left: 24px;
+}
+
+.recipe-steps li {
+    margin-bottom: 9px;
+
+    line-height: 1.3;
+}
+
+/* =========================================================
+   SHOP
+   ========================================================= */
+
+.shop-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+.shop-item {
+    padding: 14px;
+
+    background: #f0d5aa;
+
+    border: 3px solid #755039;
+
+    box-shadow:
+        3px 3px 0 #543726;
+}
+
+.shop-item h3 {
+    margin:
+        0 0 5px;
+}
+
+.shop-item p {
+    font-size: 11px;
+
+    margin:
+        5px 0 10px;
+}
+
+.buy {
+    width: 100%;
+
+    height: 34px;
+
+    border: 3px solid #573927;
+
+    background: #d4a16e;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.buy:hover {
+    background: #e4b986;
+}
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+.particle {
+    position: fixed;
+
+    z-index: 2000;
+
+    pointer-events: none;
+
+    font-size: 16px;
+
+    animation:
+        particleFly 0.8s ease-out forwards;
+}
+
+@keyframes particleFly {
+
+    0% {
+        opacity: 1;
+
+        transform:
+            translate(0,0)
+            scale(1);
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            translate(var(--x),var(--y))
+            scale(0.5);
+    }
+
+}
+
+/* =========================================================
+   DRAG GHOST
+   ========================================================= */
+
+.drag-ghost {
+    position: fixed;
+
+    z-index: 3000;
+
+    pointer-events: none;
+
+    padding: 10px 14px;
+
+    background: #fff1d3;
+
+    border: 3px solid #654432;
+
+    box-shadow:
+        4px 4px 0 #4a3024;
+
+    font-weight: bold;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    #game {
+        min-width: 900px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<svg class="svg-defs">
-  <defs>
-    <!-- Paperclip Graphic -->
-    <g id="icon-paperclip">
-      <path d="M12 2C8.686 2 6 4.686 6 8v10c0 2.209 1.791 4 4 4s4-1.791 4-4V9c0-1.105-.895-2-2-2s-2 .895-2 2v8" 
-            fill="none" stroke="#718096" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </g>
-
-    <!-- Rustic Ingredient Shelf -->
-    <g id="asset-shelf">
-      <rect x="0" y="15" width="280" height="18" rx="4" fill="#8c5836"/>
-      <rect x="10" y="33" width="260" height="6" rx="2" fill="#5c3820"/>
-      <path d="M30 39 L45 65 L55 65 L40 39 Z" fill="#6e4225"/>
-      <path d="M250 39 L235 65 L225 65 L240 39 Z" fill="#6e4225"/>
-    </g>
-
-    <!-- Milk Jug -->
-    <g id="asset-milk-jug">
-      <path d="M20 10 Q20 5 30 5 L50 5 Q60 5 60 10 L58 22 Q75 30 75 55 Q75 80 50 85 L30 85 Q5 80 5 55 Q5 30 22 22 Z" fill="#f4f0ea" stroke="#d5cabb" stroke-width="3"/>
-      <path d="M15 35 Q30 32 40 37 T65 35 Q72 50 72 58 Q72 80 50 82 L30 82 Q8 78 8 58 Q8 50 15 35 Z" fill="#4a90e2" opacity="0.15"/>
-      <ellipse cx="40" cy="18" rx="14" ry="4" fill="#e2d7c7"/>
-      <path d="M60 30 C 75 30, 80 45, 68 55" fill="none" stroke="#d5cabb" stroke-width="5" stroke-linecap="round"/>
-    </g>
-
-    <!-- Wheat Jar -->
-    <g id="asset-wheat-jar">
-      <rect x="15" y="20" width="50" height="65" rx="10" fill="#ffffff" opacity="0.7" stroke="#d1c7bd" stroke-width="3"/>
-      <rect x="22" y="12" width="36" height="10" rx="3" fill="#b08d57"/>
-      <path d="M40 30 L40 70 M40 40 L30 32 M40 45 L50 37 M40 52 L30 44 M40 58 L50 50" stroke="#dab064" stroke-width="3" stroke-linecap="round"/>
-    </g>
-
-    <!-- Chocolate Slab -->
-    <g id="asset-chocolate">
-      <rect x="10" y="25" width="60" height="40" rx="4" fill="#4a2c11" stroke="#2d1908" stroke-width="2"/>
-      <path d="M10 38 H70 M10 51 H70 M30 25 V65 M50 25 V65" stroke="#361f0a" stroke-width="2"/>
-    </g>
-
-    <!-- Sugar Sack -->
-    <g id="asset-sugar">
-      <path d="M15 30 Q10 75 25 80 Q40 83 55 80 Q70 75 65 30 Q40 22 15 30 Z" fill="#f0ebe1" stroke="#d4cbbe" stroke-width="3"/>
-      <ellipse cx="40" cy="30" rx="25" ry="8" fill="#e3dbcd"/>
-      <path d="M30 28 Q40 33 50 28" fill="none" stroke="#c2b6a5" stroke-width="2"/>
-    </g>
-
-    <!-- Wooden Mixing Table -->
-    <g id="asset-table">
-      <rect x="0" y="0" width="340" height="30" rx="6" fill="#a0653b" stroke="#6e4225" stroke-width="3"/>
-      <rect x="10" y="30" width="320" height="12" fill="#7a4b2a"/>
-      <rect x="25" y="42" width="22" height="120" fill="#8c5836"/>
-      <rect x="293" y="42" width="22" height="120" fill="#8c5836"/>
-    </g>
-
-    <!-- Mixing Bowl -->
-    <g id="asset-mixing-bowl">
-      <path d="M10 20 Q10 80 60 85 Q110 80 110 20 Z" fill="#e8f0fe" stroke="#b0c4de" stroke-width="4"/>
-      <ellipse cx="60" cy="20" rx="50" ry="12" fill="#d0e1fd" stroke="#b0c4de" stroke-width="3"/>
-    </g>
-
-    <!-- Vintage Oven -->
-    <g id="asset-oven">
-      <rect x="0" y="0" width="160" height="180" rx="16" fill="#d9534f" stroke="#a73a37" stroke-width="4"/>
-      <rect x="15" y="15" width="130" height="30" rx="6" fill="#f7f5f0"/>
-      <!-- Oven Knobs -->
-      <circle cx="35" cy="30" r="7" fill="#4a4a4a"/>
-      <circle cx="60" cy="30" r="7" fill="#4a4a4a"/>
-      <circle cx="125" cy="30" r="9" fill="#d9534f" stroke="#a73a37" stroke-width="2"/>
-      <!-- Window Door -->
-      <rect x="15" y="55" width="130" height="105" rx="10" fill="#332a2a" stroke="#a73a37" stroke-width="3"/>
-      <rect x="28" y="68" width="104" height="78" rx="6" fill="#e28743" opacity="0.2"/>
-      <rect x="40" y="100" width="80" height="8" rx="4" fill="#d9534f"/>
-    </g>
-
-    <!-- Cooling Rack -->
-    <g id="asset-cooler">
-      <rect x="0" y="30" width="140" height="10" rx="3" fill="#888"/>
-      <path d="M10 10 V30 M30 10 V30 M50 10 V30 M70 10 V30 M90 10 V30 M110 10 V30 M130 10 V30" stroke="#aaa" stroke-width="2"/>
-      <path d="M15 35 L10 55 M125 35 L130 55" stroke="#666" stroke-width="4" stroke-linecap="round"/>
-    </g>
-  </defs>
-</svg>
-
-</body>
-</html><style>
-  :root {
-    --bg-wall: #f7ede2;
-    --bg-floor: #e8d8c8;
-    --wood-dark: #6e4225;
-    --wood-light: #a0653b;
-    --accent-cozy: #f6bd60;
-    --text-color: #4a3e3d;
-    --paper-bg: #fffbf0;
-    --shadow-soft: 0 8px 20px rgba(74, 62, 61, 0.12);
-    --shadow-lift: 0 14px 28px rgba(74, 62, 61, 0.18);
-    --bounce-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  * {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: 'Fredoka', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #2b211e;
-    color: var(--text-color);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  /* Game Viewport Container */
-  .game-viewport {
-    width: 100vw;
-    max-width: 1100px;
-    height: 100vh;
-    max-height: 720px;
-    background: linear-gradient(to bottom, var(--bg-wall) 0%, var(--bg-wall) 68%, var(--bg-floor) 68%, var(--bg-floor) 100%);
-    position: relative;
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-    border: 8px solid #3d2c29;
-  }
-
-  /* Room Wallpaper Stripe Pattern */
-  .room-wall-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 68%;
-    opacity: 0.15;
-    background: repeating-linear-gradient(
-      90deg,
-      #f2d4c0,
-      #f2d4c0 30px,
-      transparent 30px,
-      transparent 60px
-    );
-    pointer-events: none;
-  }
-
-  /* Baseboard Dividing Wall & Floor */
-  .baseboard {
-    position: absolute;
-    top: 67%;
-    left: 0;
-    width: 100%;
-    height: 14px;
-    background-color: #c9b09a;
-    border-top: 2px solid #b39983;
-    border-bottom: 3px solid #8c6e58;
-  }
-
-  /* --- TOP HUD & PAPER RECIPE PIN --- */
-  .hud-container {
-    position: absolute;
-    top: 20px;
-    left: 24px;
-    right: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    z-index: 100;
-  }
-
-  /* Coin Purse */
-  .coin-purse {
-    background: var(--paper-bg);
-    padding: 10px 20px;
-    border-radius: 18px;
-    border: 3px solid #e0d0b8;
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #5c4333;
-  }
-
-  .coin-icon {
-    width: 32px;
-    height: 32px;
-    background: #f6bd60;
-    border: 3px solid #e7a638;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-  }
-
-  /* Recipe Note pinned with Paperclip */
-  .recipe-note-card {
-    position: relative;
-    background: var(--paper-bg);
-    width: 180px;
-    padding: 16px 14px 12px 14px;
-    border-radius: 4px;
-    box-shadow: var(--shadow-soft);
-    transform: rotate(2deg);
-    cursor: pointer;
-    transition: transform 0.2s var(--bounce-easing);
-    border: 1px solid #eae0d0;
-  }
-
-  .recipe-note-card:hover {
-    transform: rotate(0deg) scale(1.05);
-  }
-
-  .recipe-paperclip {
-    position: absolute;
-    top: -12px;
-    right: 24px;
-    width: 24px;
-    height: 36px;
-  }
-
-  .recipe-title {
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #7a5035;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-align: center;
-    border-bottom: 2px dashed #e6d5c3;
-    padding-bottom: 4px;
-    margin-bottom: 8px;
-  }
-
-  .recipe-mini-steps {
-    font-size: 0.72rem;
-    line-height: 1.3;
-    color: #6e5849;
-  }
-
-  /* --- ROOM STATIONS --- */
-  .station-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Pantry Shelf (Top Right Wall) */
-  #shelf-station {
-    top: 75px;
-    right: 40px;
-    width: 280px;
-  }
-
-  .shelf-items-row {
-    display: flex;
-    gap: 14px;
-    align-items: flex-end;
-    margin-bottom: -10px;
-    z-index: 2;
-  }
-
-  .pantry-item {
-    width: 50px;
-    height: 60px;
-    cursor: grab;
-    transition: transform 0.15s var(--bounce-easing);
-    position: relative;
-  }
-
-  .pantry-item:hover {
-    transform: translateY(-6px) scale(1.1);
-  }
-
-  .pantry-item:active {
-    cursor: grabbing;
-  }
-
-  .item-badge {
-    position: absolute;
-    bottom: -2px;
-    right: -2px;
-    background: #7a4b2a;
-    color: white;
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 10px;
-    border: 2px solid white;
-  }
-
-  /* Mixing Table (Center Floor) */
-  #table-station {
-    bottom: 80px;
-    left: 280px;
-    width: 340px;
-  }
-
-  .bowl-placement {
-    position: absolute;
-    top: -45px;
-    left: 50px;
-    width: 120px;
-    height: 80px;
-    cursor: pointer;
-  }
-
-  /* Oven Station (Left Floor) */
-  #oven-station {
-    bottom: 95px;
-    left: 50px;
-    width: 160px;
-  }
-
-  /* Cooling Station (Right Floor) */
-  #cooler-station {
-    bottom: 110px;
-    right: 60px;
-    width: 140px;
-  }
-
-  /* Cash Register Station */
-  #register-station {
-    bottom: 230px;
-    right: 60px;
-    width: 120px;
-    background: var(--paper-bg);
-    padding: 10px;
-    border-radius: 12px;
-    border: 3px solid #dcd0bf;
-    box-shadow: var(--shadow-soft);
-    text-align: center;
-  }
-
-  /* Dialog / Speech Bubble Tutorial */
-  .speech-bubble {
-    position: absolute;
-    top: 110px;
-    left: 40px;
-    background: white;
-    padding: 12px 18px;
-    border-radius: 16px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #5a4336;
-    box-shadow: var(--shadow-soft);
-    border: 2px solid #eae0d0;
-    max-width: 240px;
-  }
-
-  .speech-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 30px;
-    border-width: 10px 10px 0;
-    border-style: solid;
-    border-color: white transparent;
-    display: block;
-    width: 0;
-  }
-</style>
-
-<!-- ROOM HTML LAYOUT -->
-<div class="game-viewport">
-  <div class="room-wall-pattern"></div>
-  <div class="baseboard"></div>
-
-  <!-- HUD Header -->
-  <div class="hud-container">
-    <div class="coin-purse">
-      <div class="coin-icon">🪙</div>
-      $<span id="coin-count">25</span>
-    </div>
-
-    <!-- Paperclip Recipe Card -->
-    <div class="recipe-note-card" id="recipe-card">
-      <svg class="recipe-paperclip"><use href="#icon-paperclip"/></svg>
-      <div class="recipe-title">📜 Recipe</div>
-      <div class="recipe-mini-steps">
-        1. Drag 🌾 🧂 🍫 🥛<br>
-        2. Mix in 🥣 Bowl<br>
-        3. Bake in 🔥 Oven<br>
-        4. Cool & 📦 Package
-      </div>
-    </div>
-  </div>
-
-  <!-- Tutorial Dialog Bubble -->
-  <div class="speech-bubble" id="tutorial-bubble">
-    Welcome! Grab <strong>Wheat, Sugar, Choco & Milk</strong> from the shelf and drop them into the bowl!
-  </div>
-
-  <!-- Pantry Shelf Station -->
-  <div class="station-container" id="shelf-station">
-    <div class="shelf-items-row">
-      <div class="pantry-item" data-ingredient="wheat" title="Wheat Flour">
-        <svg viewBox="0 0 80 90"><use href="#asset-wheat-jar"/></svg>
-        <span class="item-badge" id="badge-wheat">5</span>
-      </div>
-      <div class="pantry-item" data-ingredient="sugar" title="Sugar">
-        <svg viewBox="0 0 80 90"><use href="#asset-sugar"/></svg>
-        <span class="item-badge" id="badge-sugar">5</span>
-      </div>
-      <div class="pantry-item" data-ingredient="chocolate" title="Chocolate">
-        <svg viewBox="0 0 80 90"><use href="#asset-chocolate"/></svg>
-        <span class="item-badge" id="badge-chocolate">5</span>
-      </div>
-      <div class="pantry-item" data-ingredient="milk" title="Milk Jug">
-        <svg viewBox="0 0 80 90"><use href="#asset-milk-jug"/></svg>
-        <span class="item-badge" id="badge-milk">5</span>
-      </div>
-    </div>
-    <svg viewBox="0 0 280 70" width="280"><use href="#asset-shelf"/></svg>
-  </div>
-
-  <!-- Baking Table Station -->
-  <div class="station-container" id="table-station">
-    <div class="bowl-placement" id="mixing-bowl-zone">
-      <svg viewBox="0 0 120 90"><use href="#asset-mixing-bowl"/></svg>
-    </div>
-    <svg viewBox="0 0 340 160" width="340"><use href="#asset-table"/></svg>
-  </div>
-
-  <!-- Oven Station -->
-  <div class="station-container" id="oven-station">
-    <svg viewBox="0 0 160 180" width="160"><use href="#asset-oven"/></svg>
-  </div>
-
-  <!-- Cooling Rack Station -->
-  <div class="station-container" id="cooler-station">
-    <svg viewBox="0 0 140 60" width="140"><use href="#asset-cooler"/></svg>
-  </div>
-
-  <!-- Cash Register Station -->
-  <div class="station-container" id="register-station">
-    <div style="font-size: 0.8rem; font-weight: 800; color: #7a5035; margin-bottom: 4px;">REGISTER</div>
-    <div style="font-size: 2rem;">🏬</div>
-  </div>
-</div><script>
-/**
- * PART 3: ADVANCED DRAG & DROP PHYSICS ENGINE
- */
-class PhysicsDragEngine {
-  constructor(viewportSelector) {
-    this.viewport = document.querySelector(viewportSelector);
-    this.activeDrag = null;
-    this.dragOffset = { x: 0, y: 0 };
-    this.dropZones = [];
-    
-    this.initListeners();
-  }
-
-  // Register an interactive zone for snapping and drop detection
-  registerDropZone(id, element, onDropCallback) {
-    this.dropZones.push({
-      id,
-      element,
-      onDropCallback
-    });
-  }
-
-  initListeners() {
-    // Mouse and Touch Unified Pointer Events
-    window.addEventListener('pointerdown', (e) => this.onPointerDown(e));
-    window.addEventListener('pointermove', (e) => this.onPointerMove(e));
-    window.addEventListener('pointerup', (e) => this.onPointerUp(e));
-    window.addEventListener('pointercancel', (e) => this.onPointerUp(e));
-  }
-
-  // Spawn or pick up a draggable item
-  onPointerDown(e) {
-    const pantryItem = e.target.closest('.pantry-item');
-    if (!pantryItem) return;
-
-    const ingredientType = pantryItem.dataset.ingredient;
-    if (!ingredientType) return;
-
-    // Check inventory stock
-    const badge = pantryItem.querySelector('.item-badge');
-    let count = parseInt(badge.textContent, 10);
-    if (count <= 0) {
-      this.bounceElement(pantryItem);
-      return;
-    }
-
-    // Spawn dynamic clone in room
-    const rect = pantryItem.getBoundingClientRect();
-    const vpRect = this.viewport.getBoundingClientRect();
-
-    const clone = document.createElement('div');
-    clone.className = 'draggable-ingredient-entity';
-    clone.dataset.ingredient = ingredientType;
-    clone.innerHTML = pantryItem.querySelector('svg').outerHTML;
-    
-    // Style flying entity
-    Object.assign(clone.style, {
-      position: 'absolute',
-      width: '60px',
-      height: '60px',
-      left: `${rect.left - vpRect.left}px`,
-      top: `${rect.top - vpRect.top}px`,
-      zIndex: '1000',
-      pointerEvents: 'none',
-      cursor: 'grabbing',
-      filter: 'drop-shadow(0 12px 16px rgba(74, 62, 61, 0.3))',
-      transform: 'scale(1.15) rotate(-5deg)',
-      transition: 'transform 0.1s ease, filter 0.1s ease'
-    });
-
-    this.viewport.appendChild(clone);
-
-    this.activeDrag = {
-      element: clone,
-      originItem: pantryItem,
-      type: ingredientType,
-      startX: rect.left - vpRect.left,
-      startY: rect.top - vpRect.top
-    };
-
-    this.dragOffset = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    };
-
-    // Decrement stock counter
-    badge.textContent = count - 1;
-  }
-
-  onPointerMove(e) {
-    if (!this.activeDrag) return;
-
-    const vpRect = this.viewport.getBoundingClientRect();
-    const x = e.clientX - vpRect.left - this.dragOffset.x;
-    const y = e.clientY - vpRect.top - this.dragOffset.y;
-
-    this.activeDrag.element.style.left = `${x}px`;
-    this.activeDrag.element.style.top = `${y}px`;
-
-    // Highlight target drop zone if hovering
-    this.dropZones.forEach(zone => {
-      const zRect = zone.element.getBoundingClientRect();
-      const elRect = this.activeDrag.element.getBoundingClientRect();
-
-      const isOver = !(
-        elRect.right < zRect.left ||
-        elRect.left > zRect.right ||
-        elRect.bottom < zRect.top ||
-        elRect.top > zRect.bottom
-      );
-
-      if (isOver) {
-        zone.element.style.filter = 'drop-shadow(0 0 12px #f6bd60)';
-      } else {
-        zone.element.style.filter = 'none';
-      }
-    });
-  }
-
-  onPointerUp(e) {
-    if (!this.activeDrag) return;
-
-    const dragEl = this.activeDrag.element;
-    const elRect = dragEl.getBoundingClientRect();
-    let droppedInZone = false;
-
-    // Check collisions with registered drop zones
-    this.dropZones.forEach(zone => {
-      const zRect = zone.element.getBoundingClientRect();
-      zone.element.style.filter = 'none';
-
-      const isOver = !(
-        elRect.right < zRect.left ||
-        elRect.left > zRect.right ||
-        elRect.bottom < zRect.top ||
-        elRect.top > zRect.bottom
-      );
-
-      if (isOver && !droppedInZone) {
-        droppedInZone = true;
-        zone.onDropCallback(this.activeDrag.type, dragEl);
-      }
-    });
-
-    // Return to pantry if missed target
-    if (!droppedInZone) {
-      this.returnToOrigin(this.activeDrag);
-    }
-
-    this.activeDrag = null;
-  }
-
-  returnToOrigin(dragData) {
-    const el = dragData.element;
-    el.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    el.style.left = `${dragData.startX}px`;
-    el.style.top = `${dragData.startY}px`;
-    el.style.transform = 'scale(0.8) rotate(0deg)';
-    el.style.opacity = '0';
-
-    setTimeout(() => {
-      el.remove();
-      const badge = dragData.originItem.querySelector('.item-badge');
-      badge.textContent = parseInt(badge.textContent, 10) + 1;
-    }, 300);
-  }
-
-  bounceElement(el) {
-    el.style.transition = 'transform 0.15s ease';
-    el.style.transform = 'scale(0.85)';
-    setTimeout(() => {
-      el.style.transform = 'scale(1.1)';
-      setTimeout(() => {
-        el.style.transform = 'scale(1)';
-      }, 150);
-    }, 150);
-  }
-}
-
-// Global Drag Engine Instance
-window.physicsEngine = new PhysicsDragEngine('.game-viewport');
-</script><script>
-/**
- * PART 4: PANTRY & INGREDIENT MECHANICS
- */
-class PantryManager {
-  constructor() {
-    this.stock = {
-      wheat: 5,
-      sugar: 5,
-      chocolate: 5,
-      milk: 5
-    };
-
-    this.costs = {
-      wheat: 2,
-      sugar: 2,
-      chocolate: 3,
-      milk: 3
-    };
-
-    this.initPantryUI();
-  }
-
-  initPantryUI() {
-    // Sync UI Badges with state
-    Object.keys(this.stock).forEach(item => {
-      this.updateBadge(item);
-    });
-
-    // Right-click or double-click to restock pantry item using coins
-    document.querySelectorAll('.pantry-item').forEach(itemEl => {
-      itemEl.addEventListener('dblclick', () => {
-        const itemType = itemEl.dataset.ingredient;
-        this.buyRestock(itemType);
-      });
-    });
-  }
-
-  updateBadge(itemType) {
-    const badge = document.getElementById(`badge-${itemType}`);
-    if (badge) {
-      badge.textContent = this.stock[itemType];
-      if (this.stock[itemType] === 0) {
-        badge.style.background = '#d9534f';
-      } else {
-        badge.style.background = '#7a4b2a';
-      }
-    }
-  }
-
-  consumeIngredient(itemType) {
-    if (this.stock[itemType] > 0) {
-      this.stock[itemType]--;
-      this.updateBadge(itemType);
-      return true;
-    }
-    return false;
-  }
-
-  buyRestock(itemType) {
-    const cost = this.costs[itemType];
-    const currentCoins = parseInt(document.getElementById('coin-count').textContent, 10);
-
-    if (currentCoins >= cost) {
-      document.getElementById('coin-count').textContent = currentCoins - cost;
-      this.stock[itemType] += 5;
-      this.updateBadge(itemType);
-      
-      // Visual celebration pulse
-      const itemEl = document.querySelector(`[data-ingredient="${itemType}"]`);
-      if (itemEl) window.physicsEngine.bounceElement(itemEl);
-      
-      this.showFloatingText(`+5 ${itemType}!`, itemEl);
-    } else {
-      const bubble = document.getElementById('tutorial-bubble');
-      if (bubble) {
-        bubble.textContent = `Not enough coins to buy ${itemType}! Costs $${cost}.`;
-      }
-    }
-  }
-
-  showFloatingText(text, targetEl) {
-    const rect = targetEl.getBoundingClientRect();
-    const vpRect = document.querySelector('.game-viewport').getBoundingClientRect();
-    
-    const floatEl = document.createElement('div');
-    floatEl.textContent = text;
-    Object.assign(floatEl.style, {
-      position: 'absolute',
-      left: `${rect.left - vpRect.left + 10}px`,
-      top: `${rect.top - vpRect.top - 10}px`,
-      color: '#46a049',
-      fontWeight: '800',
-      fontSize: '1rem',
-      pointerEvents: 'none',
-      transition: 'all 0.8s ease-out',
-      zIndex: '2000'
-    });
-
-    document.querySelector('.game-viewport').appendChild(floatEl);
-
-    requestAnimationFrame(() => {
-      floatEl.style.transform = 'translateY(-30px)';
-      floatEl.style.opacity = '0';
-    });
-
-    setTimeout(() => floatEl.remove(), 800);
-  }
-}
-
-// Instantiate Global Pantry Manager
-window.pantryManager = new PantryManager();
-</script><script>
-/**
- * PART 5: REALISTIC MIXING BOWL & BATTER SYSTEM
- */
-class MixingBowlSystem {
-  constructor() {
-    this.bowlZone = document.getElementById('mixing-bowl-zone');
-    this.ingredientsAdded = {
-      wheat: 0,
-      sugar: 0,
-      chocolate: 0,
-      milk: 0
-    };
-    this.mixProgress = 0; // 0 to 100%
-    this.isMixed = false;
-    this.isStirring = false;
-    this.lastStirX = 0;
-    this.lastStirY = 0;
-
-    this.initBowl();
-  }
-
-  initBowl() {
-    // Register bowl as a drop target in the physics engine
-    if (window.physicsEngine) {
-      window.physicsEngine.registerDropZone('mixing-bowl', this.bowlZone, (type, dragEl) => {
-        this.addIngredient(type, dragEl);
-      });
-    }
-
-    // Add interactive stirring event listeners to bowl
-    this.bowlZone.addEventListener('pointerdown', (e) => this.startStirring(e));
-    window.addEventListener('pointermove', (e) => this.handleStirring(e));
-    window.addEventListener('pointerup', () => this.stopStirring());
-  }
-
-  addIngredient(type, dragEl) {
-    if (this.isMixed) {
-      this.updateTutorial("The batter is already mixed! Take it to the oven or reset.");
-      window.physicsEngine.returnToOrigin({
-        element: dragEl,
-        originItem: document.querySelector(`[data-ingredient="${type}"]`),
-        startX: parseFloat(dragEl.style.left),
-        startY: parseFloat(dragEl.style.top)
-      });
-      return;
-    }
-
-    // Record ingredient count
-    this.ingredientsAdded[type]++;
-
-    // Animate ingredient splash landing inside bowl
-    this.createSplashEffect(type);
-
-    // Fade out dropped entity
-    dragEl.style.transition = 'all 0.25s ease';
-    dragEl.style.transform = 'scale(0.3) rotate(15deg)';
-    dragEl.style.opacity = '0';
-    setTimeout(() => dragEl.remove(), 250);
-
-    // Update tutorial guidance
-    const count = Object.values(this.ingredientsAdded).reduce((a, b) => a + b, 0);
-    if (this.hasAllIngredients()) {
-      this.updateTutorial("All ingredients added! Click and swirl your mouse inside the bowl to stir the batter!");
-    } else {
-      this.updateTutorial(`Added ${type}! (${count}/4 ingredients in bowl)`);
-    }
-
-    this.renderBowlContents();
-  }
-
-  hasAllIngredients() {
-    return (
-      this.ingredientsAdded.wheat > 0 &&
-      this.ingredientsAdded.sugar > 0 &&
-      this.ingredientsAdded.chocolate > 0 &&
-      this.ingredientsAdded.milk > 0
-    );
-  }
-
-  createSplashEffect(type) {
-    const splash = document.createElement('div');
-    const colors = {
-      wheat: '#dab064',
-      sugar: '#f0ebe1',
-      chocolate: '#4a2c11',
-      milk: '#f4f0ea'
-    };
-
-    Object.assign(splash.style, {
-      position: 'absolute',
-      top: '30px',
-      left: '45px',
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      backgroundColor: colors[type] || '#fff',
-      zIndex: '10',
-      pointerEvents: 'none',
-      transform: 'scale(0.2)',
-      transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease'
-    });
-
-    this.bowlZone.appendChild(splash);
-
-    requestAnimationFrame(() => {
-      splash.style.transform = 'scale(1.4)';
-      splash.style.opacity = '0.7';
-    });
-
-    setTimeout(() => {
-      splash.style.opacity = '0';
-      setTimeout(() => splash.remove(), 300);
-    }, 400);
-  }
-
-  startStirring(e) {
-    if (!this.hasAllIngredients()) {
-      this.updateTutorial("Add all 4 ingredients before stirring!");
-      return;
-    }
-
-    if (this.isMixed) return;
-
-    this.isStirring = true;
-    this.lastStirX = e.clientX;
-    this.lastStirY = e.clientY;
-  }
-
-  handleStirring(e) {
-    if (!this.isStirring || this.isMixed) return;
-
-    const dx = e.clientX - this.lastStirX;
-    const dy = e.clientY - this.lastStirY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance > 8) {
-      this.mixProgress = Math.min(100, this.mixProgress + 2.5);
-      this.lastStirX = e.clientX;
-      this.lastStirY = e.clientY;
-
-      // Gentle bowl shake animation while mixing
-      this.bowlZone.style.transform = `rotate(${(Math.random() - 0.5) * 6}deg)`;
-
-      this.renderBowlContents();
-
-      if (this.mixProgress >= 100) {
-        this.isMixed = true;
-        this.bowlZone.style.transform = 'rotate(0deg)';
-        this.updateTutorial("Batter is perfectly smooth! Drag the bowl to the 🔥 Oven to bake!");
-      } else {
-        this.updateTutorial(`Stirring... ${Math.round(this.mixProgress)}% smooth!`);
-      }
-    }
-  }
-
-  stopStirring() {
-    this.isStirring = false;
-    this.bowlZone.style.transform = 'rotate(0deg)';
-  }
-
-  renderBowlContents() {
-    // Dynamic batter color blending from pale flour to rich chocolate batter
-    const progressRatio = this.mixProgress / 100;
-    const r = Math.round(230 - progressRatio * 156);
-    const g = Math.round(210 - progressRatio * 166);
-    const b = Math.round(180 - progressRatio * 163);
-    const batterColor = `rgb(${r}, ${g}, ${b})`;
-
-    let batterOverlay = this.bowlZone.querySelector('.batter-fill');
-    if (!batterOverlay) {
-      batterOverlay = document.createElement('div');
-      batterOverlay.className = 'batter-fill';
-      Object.assign(batterOverlay.style, {
-        position: 'absolute',
-        top: '18px',
-        left: '20px',
-        width: '80px',
-        height: '35px',
-        borderRadius: '50%',
-        zIndex: '5',
-        pointerEvents: 'none',
-        transition: 'background-color 0.2s ease'
-      });
-      this.bowlZone.appendChild(batterOverlay);
-    }
-
-    batterOverlay.style.backgroundColor = batterColor;
-  }
-
-  updateTutorial(msg) {
-    const bubble = document.getElementById('tutorial-bubble');
-    if (bubble) bubble.innerHTML = msg;
-  }
-
-  resetBowl() {
-    this.ingredientsAdded = { wheat: 0, sugar: 0, chocolate: 0, milk: 0 };
-    this.mixProgress = 0;
-    this.isMixed = false;
-    const fill = this.bowlZone.querySelector('.batter-fill');
-    if (fill) fill.remove();
-  }
-}
-
-// Instantiate Global Mixing Bowl System
-window.mixingBowlSystem = new MixingBowlSystem();
-</script><script>
-/**
- * PART 6: BAKING & OVEN MECHANICS
- */
-class OvenSystem {
-  constructor() {
-    this.ovenStation = document.getElementById('oven-station');
-    this.isBaking = false;
-    this.isBaked = false;
-    this.bakeProgress = 0; // 0 to 100%
-    this.bakeTimer = null;
-
-    this.initOven();
-  }
-
-  initOven() {
-    // Register Oven as a drop target
-    if (window.physicsEngine) {
-      window.physicsEngine.registerDropZone('oven', this.ovenStation, () => {
-        this.handleBowlDrop();
-      });
-    }
-
-    // Click oven to start or check progress
-    this.ovenStation.addEventListener('click', () => {
-      if (!this.isBaking && !this.isBaked) {
-        if (window.mixingBowlSystem && window.mixingBowlSystem.isMixed) {
-          this.startBaking();
-        } else {
-          this.updateTutorial("Bring a bowl of mixed batter to the oven first!");
-        }
-      } else if (this.isBaked) {
-        this.retrieveBakedGoods();
-      }
-    });
-  }
-
-  handleBowlDrop() {
-    if (!window.mixingBowlSystem || !window.mixingBowlSystem.isMixed) {
-      this.updateTutorial("Mix the ingredients thoroughly in the bowl before baking!");
-      return;
-    }
-
-    if (this.isBaking || this.isBaked) {
-      this.updateTutorial("The oven is already in use!");
-      return;
-    }
-
-    this.startBaking();
-  }
-
-  startBaking() {
-    this.isBaking = true;
-    this.bakeProgress = 0;
-
-    // Reset mixing bowl state for next batch
-    window.mixingBowlSystem.resetBowl();
-
-    this.updateTutorial("🔥 Baking in progress! Keep an eye on the oven window...");
-    this.setOvenHeatGlow(true);
-
-    // Baking timer loop (8 seconds total)
-    this.bakeTimer = setInterval(() => {
-      this.bakeProgress += 12.5;
-
-      // Spawn heat steam/particles
-      this.createOvenParticle();
-
-      if (this.bakeProgress >= 100) {
-        clearInterval(this.bakeTimer);
-        this.finishBaking();
-      } else {
-        this.updateTutorial(`🔥 Baking... ${Math.round(this.bakeProgress)}% complete`);
-      }
-    }, 1000);
-  }
-
-  finishBaking() {
-    this.isBaking = false;
-    this.isBaked = true;
-    this.setOvenHeatGlow(false);
-
-    this.updateTutorial("✨ Ding! Fresh golden brownies are ready! Click the oven to place them on the Cooling Rack.");
-
-    // Visual indicator inside oven window
-    const windowEl = this.ovenStation.querySelector('rect[fill="#e28743"]');
-    if (windowEl) {
-      windowEl.style.fill = '#ffd166';
-      windowEl.style.opacity = '0.8';
-    }
-  }
-
-  retrieveBakedGoods() {
-    this.isBaked = false;
-
-    // Reset window style
-    const windowEl = this.ovenStation.querySelector('rect[fill="#ffd166"]');
-    if (windowEl) {
-      windowEl.style.fill = '#e28743';
-      windowEl.style.opacity = '0.2';
-    }
-
-    // Notify Cooling Rack System
-    if (window.coolingRackSystem) {
-      window.coolingRackSystem.addBakedTray();
-    } else {
-      this.updateTutorial("Placed brownies on the cooling rack!");
-    }
-  }
-
-  setOvenHeatGlow(active) {
-    if (active) {
-      this.ovenStation.style.filter = 'drop-shadow(0 0 18px #ff6b6b)';
-      this.ovenStation.style.transform = 'scale(1.02)';
-    } else {
-      this.ovenStation.style.filter = 'none';
-      this.ovenStation.style.transform = 'scale(1)';
-    }
-  }
-
-  createOvenParticle() {
-    const rect = this.ovenStation.getBoundingClientRect();
-    const vpRect = document.querySelector('.game-viewport').getBoundingClientRect();
-
-    const steam = document.createElement('div');
-    Object.assign(steam.style, {
-      position: 'absolute',
-      left: `${rect.left - vpRect.left + 70 + (Math.random() * 20 - 10)}px`,
-      top: `${rect.top - vpRect.top + 20}px`,
-      width: '12px',
-      height: '12px',
-      borderRadius: '50%',
-      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-      pointerEvents: 'none',
-      zIndex: '1500',
-      transition: 'all 1.2s ease-out'
-    });
-
-    document.querySelector('.game-viewport').appendChild(steam);
-
-    requestAnimationFrame(() => {
-      steam.style.transform = 'translateY(-40px) scale(1.8)';
-      steam.style.opacity = '0';
-    });
-
-    setTimeout(() => steam.remove(), 1200);
-  }
-
-  updateTutorial(msg) {
-    const bubble = document.getElementById('tutorial-bubble');
-    if (bubble) bubble.innerHTML = msg;
-  }
-}
-
-// Instantiate Global Oven System
-window.ovenSystem = new OvenSystem();
-</script><script>
-/**
- * PART 7: COOLING RACK & PACKAGING STATION
- */
-class CoolingRackSystem {
-  constructor() {
-    this.coolerStation = document.getElementById('cooler-station');
-    this.trayState = 'empty'; // 'empty' | 'cooling' | 'cooled' | 'packaged'
-    this.coolProgress = 0;
-    this.coolTimer = null;
-
-    this.initCooler();
-  }
-
-  initCooler() {
-    this.coolerStation.addEventListener('click', () => {
-      if (this.trayState === 'cooled') {
-        this.packageGoods();
-      } else if (this.trayState === 'packaged') {
-        this.sendToRegister();
-      } else if (this.trayState === 'cooling') {
-        this.updateTutorial("Brownies are still cooling down... wait for steam to clear!");
-      } else {
-        this.updateTutorial("Bake a fresh batch in the oven first!");
-      }
-    });
-  }
-
-  addBakedTray() {
-    this.trayState = 'cooling';
-    this.coolProgress = 0;
-
-    this.renderTrayOnRack();
-    this.updateTutorial("♨️ Hot brownies resting on the cooling rack!");
-
-    // Cooling process loop (5 seconds)
-    this.coolTimer = setInterval(() => {
-      this.coolProgress += 20;
-      this.createSteamParticle();
-
-      if (this.coolProgress >= 100) {
-        clearInterval(this.coolTimer);
-        this.finishCooling();
-      }
-    }, 1000);
-  }
-
-  finishCooling() {
-    this.trayState = 'cooled';
-    this.updateTutorial("✨ Brownies are cooled! Click the rack to wrap & package them with string.");
-    this.renderTrayOnRack();
-  }
-
-  packageGoods() {
-    this.trayState = 'packaged';
-    this.renderTrayOnRack();
-    this.updateTutorial("🎁 Packaged with love! Click the package to move it to the Register for customers!");
-  }
-
-  sendToRegister() {
-    this.trayState = 'empty';
-    this.removeTrayGraphics();
-
-    if (window.shopRegisterSystem) {
-      window.shopRegisterSystem.addInventoryToStore();
-    } else {
-      this.updateTutorial("Moved packaged brownies to the counter!");
-    }
-  }
-
-  renderTrayOnRack() {
-    this.removeTrayGraphics();
-
-    const container = document.createElement('div');
-    container.className = 'cooling-tray-container';
-    Object.assign(container.style, {
-      position: 'absolute',
-      top: '-25px',
-      left: '20px',
-      width: '100px',
-      height: '40px',
-      zIndex: '10',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justify-content: 'center',
-      transition: 'transform 0.2s ease'
-    });
-
-    if (this.trayState === 'cooling' || this.trayState === 'cooled') {
-      container.innerHTML = `
-        <div style="background: #4a2c11; width: 90px; height: 30px; border-radius: 6px; border: 2px solid #2d1908; box-shadow: 0 4px 6px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: space-evenly;">
-          <div style="width: 18px; height: 18px; background: #6e3d19; border-radius: 3px;"></div>
-          <div style="width: 18px; height: 18px; background: #6e3d19; border-radius: 3px;"></div>
-          <div style="width: 18px; height: 18px; background: #6e3d19; border-radius: 3px;"></div>
-          <div style="width: 18px; height: 18px; background: #6e3d19; border-radius: 3px;"></div>
-        </div>
-      `;
-    } else if (this.trayState === 'packaged') {
-      container.innerHTML = `
-        <div style="background: #f0ebe1; width: 85px; height: 32px; border-radius: 8px; border: 2px solid #d4cbbe; box-shadow: 0 6px 12px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; position: relative;">
-          <div style="position: absolute; width: 100%; height: 3px; background: #d9534f;"></div>
-          <div style="position: absolute; width: 3px; height: 100%; background: #d9534f;"></div>
-          <span style="font-size: 0.75rem; font-weight: 800; color: #7a5035; z-index: 2; background: #fffbf0; padding: 1px 4px; border-radius: 4px;">🤎 Brownie</span>
-        </div>
-      `;
-    }
-
-    this.coolerStation.appendChild(container);
-  }
-
-  removeTrayGraphics() {
-    const existing = this.coolerStation.querySelector('.cooling-tray-container');
-    if (existing) existing.remove();
-  }
-
-  createSteamParticle() {
-    const rect = this.coolerStation.getBoundingClientRect();
-    const vpRect = document.querySelector('.game-viewport').getBoundingClientRect();
-
-    const steam = document.createElement('div');
-    Object.assign(steam.style, {
-      position: 'absolute',
-      left: `${rect.left - vpRect.left + 50 + (Math.random() * 30 - 15)}px`,
-      top: `${rect.top - vpRect.top + 10}px`,
-      width: '8px',
-      height: '8px',
-      borderRadius: '50%',
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      pointerEvents: 'none',
-      zIndex: '1500',
-      transition: 'all 1.0s ease-out'
-    });
-
-    document.querySelector('.game-viewport').appendChild(steam);
-
-    requestAnimationFrame(() => {
-      steam.style.transform = 'translateY(-30px) scale(1.5)';
-      steam.style.opacity = '0';
-    });
-
-    setTimeout(() => steam.remove(), 1000);
-  }
-
-  updateTutorial(msg) {
-    const bubble = document.getElementById('tutorial-bubble');
-    if (bubble) bubble.innerHTML = msg;
-  }
-}
-
-// Instantiate Global Cooling Rack System
-window.coolingRackSystem = new CoolingRackSystem();
-</script><!-- PART 8: PAPER RECIPE MODAL OVERLAY HTML -->
-<style>
-  .recipe-modal-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(43, 33, 30, 0.5);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 3000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-  }
-
-  .recipe-modal-backdrop.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .recipe-paper-sheet {
-    position: relative;
-    background: #fffbf0;
-    width: 380px;
-    padding: 30px 24px;
-    border-radius: 6px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-    border: 1px solid #eae0d0;
-    transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .recipe-modal-backdrop.open .recipe-paper-sheet {
-    transform: translateY(0) scale(1);
-  }
-
-  .recipe-paper-clip-large {
-    position: absolute;
-    top: -18px;
-    left: 35px;
-    width: 32px;
-    height: 50px;
-  }
-
-  .recipe-close-btn {
-    position: absolute;
-    top: 14px;
-    right: 18px;
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    cursor: pointer;
-    color: #7a5035;
-    font-weight: bold;
-  }
-
-  .recipe-sheet-title {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: #6e4225;
-    text-align: center;
-    border-bottom: 2px dashed #e6d5c3;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-  }
-
-  .recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-
-  .recipe-grid-item {
-    background: #f7ede2;
-    padding: 8px 12px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #5c4333;
-  }
-
-  .recipe-instruction-list {
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: #6e5849;
-    padding-left: 18px;
-  }
-
-  .recipe-instruction-list li {
-    margin-bottom: 6px;
-  }
-</style>
-
-<div class="recipe-modal-backdrop" id="recipe-modal">
-  <div class="recipe-paper-sheet">
-    <svg class="recipe-paper-clip-large"><use href="#icon-paperclip"/></svg>
-    <button class="recipe-close-btn" id="close-recipe-btn">&times;</button>
-    
-    <div class="recipe-sheet-title">📜 Grandma Sheepie's Brownies</div>
-
-    <div style="font-size: 0.8rem; font-weight: 700; color: #7a5035; margin-bottom: 8px;">INGREDIENTS NEEDED:</div>
-    <div class="recipe-grid">
-      <div class="recipe-grid-item">🌾 1x Wheat Flour</div>
-      <div class="recipe-grid-item">🧂 1x Sugar Sack</div>
-      <div class="recipe-grid-item">🍫 1x Chocolate Slab</div>
-      <div class="recipe-grid-item">🥛 1x Milk Jug</div>
-    </div>
-
-    <div style="font-size: 0.8rem; font-weight: 700; color: #7a5035; margin-bottom: 8px;">BAKING STEPS:</div>
-    <ol class="recipe-instruction-list">
-      <li>Drag each of the 4 ingredients from the shelf into the mixing bowl.</li>
-      <li>Click and swirl your mouse inside the bowl to stir the batter to 100%.</li>
-      <li>Click the bowl to bake it in the oven until golden brown.</li>
-      <li>Place hot brownies on the cooling rack and click to package them.</li>
-      <li>Sell packaged treats at the register to hungry customers!</li>
-    </ol>
-  </div>
-</div>
-
-<script>
-/**
- * PART 8: PAPER RECIPE MODAL CONTROLLER
- */
-class RecipeModalManager {
-  constructor() {
-    this.cardTrigger = document.getElementById('recipe-card');
-    this.modalBackdrop = document.getElementById('recipe-modal');
-    this.closeBtn = document.getElementById('close-recipe-btn');
-
-    this.initEvents();
-  }
-
-  initEvents() {
-    if (this.cardTrigger) {
-      this.cardTrigger.addEventListener('click', () => this.openModal());
-    }
-
-    if (this.closeBtn) {
-      this.closeBtn.addEventListener('click', () => this.closeModal());
-    }
-
-    if (this.modalBackdrop) {
-      this.modalBackdrop.addEventListener('click', (e) => {
-        if (e.target === this.modalBackdrop) this.closeModal();
-      });
-    }
-  }
-
-  openModal() {
-    this.modalBackdrop.classList.add('open');
-  }
-
-  closeModal() {
-    this.modalBackdrop.classList.remove('open');
-  }
-}
-
-// Instantiate Global Recipe Modal Manager
-window.recipeModalManager = new RecipeModalManager();
-</script><script>
-/**
- * PART 9: SHOP, CUSTOMER REGISTER & ECONOMY ENGINE
- */
-class ShopRegisterSystem {
-  constructor() {
-    this.registerStation = document.getElementById('register-station');
-    this.storeInventory = 0;
-    this.customerQueue = [];
-    this.isCustomerWaiting = false;
-
-    this.initRegister();
-  }
-
-  initRegister() {
-    this.registerStation.addEventListener('click', () => {
-      if (this.isCustomerWaiting && this.storeInventory > 0) {
-        this.sellToCustomer();
-      } else if (this.storeInventory === 0) {
-        this.updateTutorial("No packaged brownies in stock! Package some on the cooling rack first.");
-      } else if (!this.isCustomerWaiting) {
-        this.updateTutorial("Waiting for a hungry customer to arrive...");
-      }
-    });
-
-    // Start customer arrival timer loop
-    this.startCustomerLoop();
-  }
-
-  addInventoryToStore() {
-    this.storeInventory += 4; // 1 batch = 4 packaged treats
-    this.renderRegisterStatus();
-    this.updateTutorial(`🛒 Stocked ${this.storeInventory} treats at the register!`);
-
-    if (!this.isCustomerWaiting) {
-      this.spawnCustomer();
-    }
-  }
-
-  startCustomerLoop() {
-    setInterval(() => {
-      if (!this.isCustomerWaiting && Math.random() > 0.3) {
-        this.spawnCustomer();
-      }
-    }, 6000);
-  }
-
-  spawnCustomer() {
-    this.isCustomerWaiting = true;
-    this.renderCustomerSprite();
-
-    if (this.storeInventory > 0) {
-      this.updateTutorial("🔔 A happy sheepie customer arrived! Click the register to sell brownies for $12!");
-    } else {
-      this.updateTutorial("🔔 A customer arrived, but you're out of stock! Quick, bake a batch!");
-    }
-  }
-
-  sellToCustomer() {
-    this.storeInventory--;
-    this.isCustomerWaiting = false;
-
-    // Financial Reward
-    const price = 12;
-    const currentCoins = parseInt(document.getElementById('coin-count').textContent, 10);
-    document.getElementById('coin-count').textContent = currentCoins + price;
-
-    // Animate coin pop
-    this.createCoinPopEffect(price);
-
-    this.removeCustomerSprite();
-    this.renderRegisterStatus();
-
-    this.updateTutorial(`💰 Sold brownie package for $${price}! Total stock remaining: ${this.storeInventory}`);
-  }
-
-  renderRegisterStatus() {
-    let stockBadge = this.registerStation.querySelector('.register-stock-badge');
-    if (!stockBadge) {
-      stockBadge = document.createElement('div');
-      stockBadge.className = 'register-stock-badge';
-      Object.assign(stockBadge.style, {
-        position: 'absolute',
-        top: '-8px',
-        right: '-8px',
-        background: '#4a90e2',
-        color: 'white',
-        fontSize: '0.75rem',
-        fontWeight: '800',
-        padding: '2px 8px',
-        borderRadius: '12px',
-        border: '2px solid white'
-      });
-      this.registerStation.appendChild(stockBadge);
-    }
-    stockBadge.textContent = `${this.storeInventory} in stock`;
-  }
-
-  renderCustomerSprite() {
-    this.removeCustomerSprite();
-
-    const customer = document.createElement('div');
-    customer.className = 'customer-entity';
-    customer.innerHTML = '🐑'; // Cute sheepie icon
-    Object.assign(customer.style, {
-      position: 'absolute',
-      top: '-45px',
-      left: '35px',
-      fontSize: '2.5rem',
-      zIndex: '20',
-      animation: 'customerBounce 0.6s infinite alternate cubic-bezier(0.34, 1.56, 0.64, 1)'
-    });
-
-    this.registerStation.appendChild(customer);
-  }
-
-  removeCustomerSprite() {
-    const existing = this.registerStation.querySelector('.customer-entity');
-    if (existing) existing.remove();
-  }
-
-  createCoinPopEffect(amount) {
-    const rect = this.registerStation.getBoundingClientRect();
-    const vpRect = document.querySelector('.game-viewport').getBoundingClientRect();
-
-    const coinFloat = document.createElement('div');
-    coinFloat.textContent = `+$${amount} 🪙`;
-    Object.assign(coinFloat.style, {
-      position: 'absolute',
-      left: `${rect.left - vpRect.left + 30}px`,
-      top: `${rect.top - vpRect.top - 20}px`,
-      color: '#f6bd60',
-      fontWeight: '800',
-      fontSize: '1.2rem',
-      pointerEvents: 'none',
-      zIndex: '2500',
-      textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-      transition: 'all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-    });
-
-    document.querySelector('.game-viewport').appendChild(coinFloat);
-
-    requestAnimationFrame(() => {
-      coinFloat.style.transform = 'translateY(-45px) scale(1.2)';
-      coinFloat.style.opacity = '0';
-    });
-
-    setTimeout(() => coinFloat.remove(), 900);
-  }
-
-  updateTutorial(msg) {
-    const bubble = document.getElementById('tutorial-bubble');
-    if (bubble) bubble.innerHTML = msg;
-  }
-}
-
-// Instantiate Global Shop Register System
-window.shopRegisterSystem = new ShopRegisterSystem();
-</script><style>
-  /* Customer Bounce Keyframe Animation */
-  @keyframes customerBounce {
-    0% { transform: translateY(0) scale(1); }
-    100% { transform: translateY(-8px) scale(1.05); }
-  }
-
-  /* Dust Particle Floating Animation */
-  @keyframes floatDust {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    50% { opacity: 0.6; }
-    100% { transform: translateY(-120px) translateX(20px); opacity: 0; }
-  }
-
-  .ambient-dust {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10;
-  }
-</style>
-
-<script>
-/**
- * PART 10: PARTICLE EFFECTS, SYNTHESIZED AUDIO & FINAL GAME LOOP
- */
-class CozyPolishSystem {
-  constructor() {
-    this.audioCtx = null;
-    this.initAudio();
-    this.spawnAmbientDust();
-    this.initButtonEffects();
-  }
-
-  // Web Audio API Sound Synthesizer (No external asset loading required)
-  initAudio() {
-    const unlockAudio = () => {
-      if (!this.audioCtx) {
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
-      }
-    };
-    window.addEventListener('pointerdown', unlockAudio, { once: true });
-  }
-
-  playSound(type) {
-    if (!this.audioCtx) return;
-
-    const osc = this.audioCtx.createOscillator();
-    const gain = this.audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(this.audioCtx.destination);
-
-    const now = this.audioCtx.currentTime;
-
-    if (type === 'pop') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(400, now);
-      osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
-      gain.gain.setValueAtTime(0.3, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-      osc.start(now);
-      osc.stop(now + 0.1);
-    } else if (type === 'coin') {
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(987.77, now); // B5
-      osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6
-      gain.gain.setValueAtTime(0.2, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-      osc.start(now);
-      osc.stop(now + 0.3);
-    } else if (type === 'ding') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, now);
-      gain.gain.setValueAtTime(0.4, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-      osc.start(now);
-      osc.stop(now + 0.6);
-    }
-  }
-
-  spawnAmbientDust() {
-    const viewport = document.querySelector('.game-viewport');
-    setInterval(() => {
-      const dust = document.createElement('div');
-      dust.className = 'ambient-dust';
-      const size = Math.random() * 4 + 2;
-      Object.assign(dust.style, {
-        width: `${size}px`,
-        height: `${size}px`,
-        left: `${Math.random() * 90 + 5}%`,
-        bottom: '20%',
-        animation: `floatDust ${Math.random() * 4 + 4}s linear forwards`
-      });
-
-      viewport.appendChild(dust);
-      setTimeout(() => dust.remove(), 8000);
-    }, 1500);
-  }
-
-  initButtonEffects() {
-    // Add squish-and-bounce audio/visual feel to interactive items
-    document.querySelectorAll('.pantry-item, .recipe-note-card, #register-station, #oven-station, #cooler-station').forEach(el => {
-      el.addEventListener('pointerdown', () => {
-        this.playSound('pop');
-        el.style.transform = 'scale(0.92)';
-      });
-      el.addEventListener('pointerup', () => {
-        el.style.transform = '';
-      });
-    });
-  }
-}
-
-// Global Initialization after DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-  window.cozyPolishSystem = new CozyPolishSystem();
-
-  // Patch sound effects into game events
-  const originalSell = window.shopRegisterSystem?.sellToCustomer;
-  if (originalSell) {
-    window.shopRegisterSystem.sellToCustomer = function() {
-      originalSell.apply(this, arguments);
-      window.cozyPolishSystem.playSound('coin');
-    };
-  }
-
-  const originalFinishBake = window.ovenSystem?.finishBaking;
-  if (originalFinishBake) {
-    window.ovenSystem.finishBaking = function() {
-      originalFinishBake.apply(this, arguments);
-      window.cozyPolishSystem.playSound('ding');
-    };
-  }
-});
-</script>
+<div id="game">
+
+    <div class="wall"></div>
+    <div class="floor"></div>
+
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
+    <div class="topbar">
+
+        <div class="logo">
+            🍫 BROWNIE CORNER
+        </div>
+
+        <div id="money" class="money">
+            $<span id="moneyValue">25</span>
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         RECIPE
+         ===================================================== -->
+
+    <button id="recipeButton">
+
+        <div class="recipe-small">
+            📜 SECRET
+        </div>
+
+        <div class="recipe-small">
+            RECIPE
+        </div>
+
+    </button>
+
+    <!-- =====================================================
+         SHOP
+         ===================================================== -->
+
+    <button id="shopButton">
+        🛒 SHOP
+    </button>
+
+    <!-- =====================================================
+         MIXING STATION
+         ===================================================== -->
+
+    <div id="mixStation" class="station">
+
+        <div class="station-label">
+            MIXING TABLE
+        </div>
+
+        <div id="mixTable" class="table">
+
+            <div class="table-leg left"></div>
+            <div class="table-leg right"></div>
+
+        </div>
+
+        <div
+            id="bowl"
+            class="bowl"
+            draggable="true"
+        >
+
+            <div
+                id="mixture"
+                class="mixture"
+            ></div>
+
+        </div>
+
+        <div
+            id="mixProgress"
+            class="mix-progress"
+        >
+
+            <div
+                id="mixProgressFill"
+                class="mix-progress-fill"
+            ></div>
+
+        </div>
+
+        <div class="ingredients">
+
+            <div
+                class="ingredient"
+                draggable="true"
+                data-ingredient="flour"
+            >
+                <div class="ingredient-icon">
+                    🌾
+                </div>
+
+                <div class="ingredient-name">
+                    Flour
+                </div>
+            </div>
+
+            <div
+                class="ingredient"
+                draggable="true"
+                data-ingredient="sugar"
+            >
+                <div class="ingredient-icon">
+                    🧂
+                </div>
+
+                <div class="ingredient-name">
+                    Sugar
+                </div>
+            </div>
+
+            <div
+                class="ingredient"
+                draggable="true"
+                data-ingredient="chocolate"
+            >
+                <div class="ingredient-icon">
+                    🍫
+                </div>
+
+                <div class="ingredient-name">
+                    Chocolate
+                </div>
+            </div>
+
+            <div
+                class="ingredient"
+                draggable="true"
+                data-ingredient="milk"
+            >
+                <div class="ingredient-icon">
+                    🥛
+                </div>
+
+                <div class="ingredient-name">
+                    Milk
+                </div>
+            </div>
+
+        </div>
+
+        <button
+            id="mixButton"
+            class="mix-button"
+        >
+            HOLD TO MIX
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+         PAN
+         ===================================================== -->
+
+    <div id="panStation" class="station">
+
+        <div class="station-label">
+            PREPARATION
+        </div>
+
+        <div id="panTable" class="table">
+
+            <div class="table-leg left"></div>
+            <div class="table-leg right"></div>
+
+        </div>
+
+        <div
+            id="pan"
+            class="pan"
+            draggable="true"
+        ></div>
+
+    </div>
+
+    <!-- =====================================================
+         OVEN
+         ===================================================== -->
+
+    <div id="ovenStation" class="station">
+
+        <div class="station-label">
+            OVEN
+        </div>
+
+        <div
+            id="oven"
+            class="oven"
+        >
+
+            <div class="oven-top">
+
+                <div
+                    id="ovenDisplay"
+                    class="oven-display"
+                >
+                    READY
+                </div>
+
+                <button
+                    id="bakeButton"
+                    class="bake-button"
+                >
+                    BAKE
+                </button>
+
+            </div>
+
+            <div class="oven-light"></div>
+
+            <div class="oven-door">
+
+                <div class="oven-window"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         COOLING
+         ===================================================== -->
+
+    <div
+        id="coolStation"
+        class="station"
+    >
+
+        <div class="station-label">
+            COOLING RACK
+        </div>
+
+        <div
+            id="coolTable"
+            class="table"
+        >
+
+            <div class="table-leg left"></div>
+            <div class="table-leg right"></div>
+
+        </div>
+
+        <div
+            id="coolingRack"
+            class="cooling-rack"
+        ></div>
+
+        <div
+            id="coolingBrownie"
+            class="cooling-brownie"
+            draggable="true"
+        ></div>
+
+    </div>
+
+    <!-- =====================================================
+         PACKAGING
+         ===================================================== -->
+
+    <div
+        id="packageStation"
+        class="station"
+    >
+
+        <div class="station-label">
+            PACKAGING
+        </div>
+
+        <div
+            id="packageTable"
+            class="table"
+        >
+
+            <div class="table-leg left"></div>
+            <div class="table-leg right"></div>
+
+        </div>
+
+        <div
+            id="packageBox"
+            class="package-box empty"
+            draggable="true"
+        >
+
+            <div class="box-brownie"></div>
+
+        </div>
+
+        <button
+            id="packageButton"
+            class="package-button"
+        >
+            PACKAGE
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+         SELLING
+         ===================================================== -->
