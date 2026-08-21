@@ -6,9 +6,9 @@
 <title>Little Brownie Bakery</title>
 
 <style>
+
 /* =========================================================
-   LITTLE BROWNIE BAKERY
-   Original cozy pixel-art-inspired style
+   BASIC SETTINGS
    ========================================================= */
 
 * {
@@ -16,226 +16,315 @@
     image-rendering: pixelated;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
     font-family: "Courier New", monospace;
-    background: #9fc58d;
-    color: #3b2a22;
+    color: #4a3023;
 }
 
-/* ---------- MAIN GAME ---------- */
+body {
+    background: #a9c990;
+}
+
+/* =========================================================
+   GAME
+   ========================================================= */
 
 #game {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    position: relative;
     overflow: hidden;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12) 0 2px, transparent 3px),
-        radial-gradient(circle at 70% 60%, rgba(80,110,60,.08) 0 2px, transparent 3px),
-        #a9ca93;
+    background: #a9c990;
 }
 
-/* ---------- TOP BAR ---------- */
+/* =========================================================
+   TOP BAR
+   ========================================================= */
 
 #topBar {
     position: absolute;
+    z-index: 50;
     left: 0;
     top: 0;
     width: 100%;
     height: 62px;
-    background: #6e4934;
-    border-bottom: 5px solid #4b3225;
-    color: #fff3d5;
-    z-index: 50;
+
     display: flex;
     align-items: center;
-    padding: 0 20px;
-    box-shadow: 0 4px 0 rgba(50,30,20,.25);
+
+    padding: 0 18px;
+
+    background: #704a35;
+    border-bottom: 5px solid #4b3023;
+
+    color: #fff0ca;
+
+    box-shadow: 0 4px 0 rgba(60,40,25,.2);
 }
 
 #gameTitle {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: bold;
-    text-shadow: 2px 2px #4b3225;
+    text-shadow: 2px 2px #4b3023;
 }
 
 #money {
     margin-left: auto;
-    background: #4e392b;
-    border: 3px solid #c99b55;
-    padding: 7px 13px;
-    border-radius: 5px;
+
+    padding: 8px 14px;
+
+    background: #50372a;
+    border: 3px solid #c79a59;
+    border-radius: 4px;
+
     font-size: 17px;
 }
 
 .topButton {
-    margin-left: 10px;
-    background: #8b6247;
-    border: 3px solid #4b3225;
-    color: #fff3d5;
+    margin-left: 9px;
+
     padding: 8px 12px;
+
+    background: #8c6349;
+    border: 3px solid #4b3023;
+
+    color: #fff0ca;
+
     font-family: inherit;
     font-weight: bold;
+
     cursor: pointer;
-    border-radius: 4px;
 }
 
 .topButton:hover {
-    background: #a87854;
+    background: #a97755;
 }
 
 .topButton:active {
     transform: translateY(2px);
 }
 
-/* ---------- WORLD ---------- */
+/* =========================================================
+   WORLD
+   ========================================================= */
 
 #world {
     position: absolute;
+
     left: 0;
-    top: 62px;
     right: 0;
+    top: 62px;
     bottom: 0;
+
     overflow: hidden;
 }
-
-/* Ground */
 
 #ground {
     position: absolute;
     inset: 0;
+
     background:
         repeating-linear-gradient(
             0deg,
             transparent 0px,
-            transparent 30px,
-            rgba(80,105,65,.06) 31px,
-            rgba(80,105,65,.06) 33px
+            transparent 29px,
+            rgba(74,105,62,.07) 30px,
+            rgba(74,105,62,.07) 32px
         ),
         repeating-linear-gradient(
             90deg,
             transparent 0px,
-            transparent 30px,
-            rgba(80,105,65,.05) 31px,
-            rgba(80,105,65,.05) 33px
+            transparent 29px,
+            rgba(74,105,62,.05) 30px,
+            rgba(74,105,62,.05) 32px
         ),
-        #a8c98f;
+        #a9c990;
 }
 
-/* Little pixel stones */
-
-.stone {
-    position: absolute;
-    width: 18px;
-    height: 10px;
-    background: #80936f;
-    border: 3px solid #657658;
-}
-
-.stone1 { left: 7%; top: 22%; }
-.stone2 { left: 88%; top: 28%; }
-.stone3 { left: 15%; top: 82%; }
-.stone4 { left: 74%; top: 86%; }
-.stone5 { left: 54%; top: 13%; }
-
-/* Trees */
+/* =========================================================
+   TREES
+   ========================================================= */
 
 .tree {
     position: absolute;
-    width: 62px;
-    height: 80px;
+    width: 70px;
+    height: 90px;
 }
 
-.tree .leaves {
+.treeLeaves {
     position: absolute;
-    left: 5px;
+
+    left: 7px;
     top: 0;
-    width: 52px;
-    height: 48px;
-    background: #5d8b54;
-    border: 5px solid #41683d;
+
+    width: 55px;
+    height: 55px;
+
+    background: #608e55;
+    border: 5px solid #416b3e;
+
     box-shadow:
-        12px 8px 0 #6d9a5e,
-        -8px 12px 0 #6d9a5e;
+        12px 5px 0 #709c62,
+        -9px 11px 0 #709c62;
 }
 
-.tree .trunk {
+.treeTrunk {
     position: absolute;
-    left: 23px;
-    top: 45px;
-    width: 17px;
-    height: 35px;
+
+    left: 26px;
+    top: 50px;
+
+    width: 18px;
+    height: 40px;
+
     background: #765038;
-    border: 4px solid #573824;
+    border: 4px solid #553722;
 }
 
-.tree1 { left: 4%; top: 8%; }
-.tree2 { right: 4%; top: 9%; }
-.tree3 { left: 3%; bottom: 4%; }
-.tree4 { right: 3%; bottom: 3%; }
+.tree1 {
+    left: 4%;
+    top: 9%;
+}
 
-/* ---------- BAKERY BUILDING ---------- */
+.tree2 {
+    right: 4%;
+    top: 10%;
+}
+
+.tree3 {
+    left: 3%;
+    bottom: 4%;
+}
+
+.tree4 {
+    right: 3%;
+    bottom: 3%;
+}
+
+/* =========================================================
+   LITTLE STONES
+   ========================================================= */
+
+.stone {
+    position: absolute;
+
+    width: 18px;
+    height: 10px;
+
+    background: #7d9270;
+    border: 3px solid #64765b;
+}
+
+.stone1 {
+    left: 8%;
+    top: 25%;
+}
+
+.stone2 {
+    right: 9%;
+    top: 30%;
+}
+
+.stone3 {
+    left: 14%;
+    bottom: 17%;
+}
+
+.stone4 {
+    right: 17%;
+    bottom: 10%;
+}
+
+/* =========================================================
+   BAKERY BUILDING
+   ========================================================= */
 
 #bakeryBuilding {
     position: absolute;
+
     left: 17%;
-    top: 10%;
+    top: 11%;
+
     width: 66%;
-    height: 78%;
-    background: #ead4a9;
-    border: 8px solid #68452f;
+    height: 77%;
+
+    background: #ead3a5;
+
+    border: 8px solid #68462f;
+
     box-shadow:
-        10px 10px 0 rgba(70,45,30,.2),
-        inset 0 0 0 5px #bd8c60;
+        10px 10px 0 rgba(60,40,25,.18),
+        inset 0 0 0 5px #bd8b5c;
 }
 
-/* Roof */
+/* =========================================================
+   ROOF
+   ========================================================= */
 
 #roof {
     position: absolute;
+
     left: -8px;
     top: -45px;
+
     width: calc(100% + 16px);
     height: 48px;
+
     background:
         repeating-linear-gradient(
             90deg,
-            #8e543b 0px,
-            #8e543b 25px,
-            #75432f 25px,
-            #75432f 50px
+            #8d533b 0px,
+            #8d533b 25px,
+            #74432f 25px,
+            #74432f 50px
         );
-    border: 7px solid #543425;
+
+    border: 7px solid #533426;
 }
 
-/* Bakery sign */
+/* =========================================================
+   SIGN
+   ========================================================= */
 
 #sign {
     position: absolute;
-    top: -34px;
+
     left: 50%;
+    top: -34px;
+
     transform: translateX(-50%);
-    background: #f3d99e;
-    border: 5px solid #60402d;
+
     padding: 6px 18px;
+
+    background: #f3d89e;
+    border: 5px solid #60402c;
+
+    color: #70432f;
+
     font-weight: bold;
-    color: #70422f;
+
     white-space: nowrap;
+
     z-index: 5;
 }
 
-/* Floor */
+/* =========================================================
+   BAKERY FLOOR
+   ========================================================= */
 
 #floor {
     position: absolute;
+
     left: 3%;
-    top: 3%;
     right: 3%;
+    top: 3%;
     bottom: 3%;
+
     background:
         repeating-linear-gradient(
             0deg,
@@ -244,166 +333,241 @@ html, body {
             #caa976 26px,
             #caa976 28px
         );
+
     border: 4px solid #a67d53;
 }
 
-/* ---------- OBJECTS ---------- */
-
-.object {
-    position: absolute;
-    user-select: none;
-}
-
-.objectLabel {
-    text-align: center;
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #4d3325;
-    text-shadow: 1px 1px #ead4a9;
-}
-
-/* Work table */
+/* =========================================================
+   TABLE
+   ========================================================= */
 
 #workTable {
+    position: absolute;
+
     left: 7%;
     top: 13%;
+
     width: 280px;
     height: 170px;
-    background: #9a6745;
+
+    background: #996644;
+
     border: 7px solid #67432d;
+
     box-shadow:
-        inset 0 0 0 5px #b67b51,
-        8px 8px 0 rgba(70,45,30,.18);
+        inset 0 0 0 5px #b87c50,
+        8px 8px 0 rgba(70,45,30,.17);
 }
 
 .tableTop {
     position: absolute;
+
     left: 10px;
     top: 10px;
     right: 10px;
+
     height: 110px;
-    background: #b87c50;
+
+    background: #b87b4f;
+
     border: 5px solid #75472f;
 }
 
 .tableLeg {
     position: absolute;
+
+    bottom: -45px;
+
     width: 22px;
     height: 45px;
+
     background: #69422c;
-    bottom: -45px;
 }
 
-.leg1 { left: 20px; }
-.leg2 { right: 20px; }
+.leg1 {
+    left: 20px;
+}
 
-/* Bowl */
+.leg2 {
+    right: 20px;
+}
+
+/* =========================================================
+   MIXING BOWL
+   ========================================================= */
 
 #bowl {
     position: absolute;
+
     left: 87px;
     top: 28px;
+
     width: 100px;
     height: 55px;
-    background: #d9e1d1;
+
+    background: #dce3d5;
+
     border: 6px solid #687466;
+
     border-radius: 0 0 45px 45px;
+
     cursor: pointer;
+
+    z-index: 10;
 }
 
-#bowl:before {
+#bowl::before {
     content: "";
+
     position: absolute;
+
     left: -7px;
     top: -12px;
+
     width: 102px;
     height: 18px;
-    background: #e8eee0;
+
+    background: #edf1e7;
+
     border: 5px solid #687466;
 }
 
 #bowlContents {
     position: absolute;
+
     left: 20px;
-    top: 0px;
+    top: 0;
+
     font-size: 24px;
+
+    z-index: 3;
 }
 
 #mixProgress {
+    display: none;
+
     position: absolute;
+
     left: 10px;
     right: 10px;
+
     bottom: -30px;
+
     height: 12px;
-    background: #5d4638;
-    border: 3px solid #3f2d23;
-    display: none;
+
+    background: #594336;
+    border: 3px solid #3d2a21;
+
+    z-index: 20;
 }
 
 #mixFill {
-    height: 100%;
     width: 0%;
-    background: #e5a75b;
+    height: 100%;
+
+    background: #d89550;
 }
 
-/* Oven */
+.objectLabel {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    text-align: center;
+
+    margin-top: 7px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    color: #4d3325;
+
+    text-shadow: 1px 1px #ead3a5;
+}
+
+/* =========================================================
+   OVEN
+   ========================================================= */
 
 #oven {
+    position: absolute;
+
     right: 8%;
     top: 12%;
+
     width: 145px;
     height: 180px;
+
     background: #70493a;
+
     border: 8px solid #4c3028;
+
     box-shadow: 8px 8px 0 rgba(70,45,30,.18);
 }
 
 #ovenTop {
     position: absolute;
+
     left: 15px;
     right: 15px;
     top: 15px;
+
     height: 35px;
+
     background: #89604a;
     border: 4px solid #4c3028;
 }
 
 #ovenDoor {
     position: absolute;
+
     left: 20px;
     right: 20px;
     top: 65px;
+
     height: 80px;
+
     background: #382b28;
     border: 5px solid #4c3028;
 }
 
 #ovenGlow {
-    position: absolute;
-    left: 9px;
-    right: 9px;
-    top: 9px;
-    bottom: 9px;
-    background: #8b4d2d;
     display: none;
+
+    position: absolute;
+
+    inset: 9px;
+
+    background:
+        radial-gradient(
+            circle,
+            #d9823f,
+            #8b4d2d
+        );
 }
 
 #ovenHandle {
     position: absolute;
+
     left: 35px;
     right: 35px;
     bottom: -22px;
+
     height: 10px;
+
     background: #30231f;
 }
 
 #ovenProgress {
     position: absolute;
+
     left: 15px;
     right: 15px;
     bottom: 10px;
+
     height: 10px;
+
     background: #34241f;
     border: 2px solid #241914;
 }
@@ -411,83 +575,132 @@ html, body {
 #ovenFill {
     width: 0%;
     height: 100%;
+
     background: #e18b48;
 }
 
-/* Cooling rack */
+/* =========================================================
+   COOLING RACK
+   ========================================================= */
 
 #coolingRack {
+    position: absolute;
+
     left: 42%;
     bottom: 10%;
+
     width: 220px;
     height: 105px;
+
     background: #7c5943;
+
     border: 6px solid #4d3528;
+
     box-shadow: 7px 7px 0 rgba(70,45,30,.15);
 }
 
 .rackLine {
     position: absolute;
+
     left: 12px;
     right: 12px;
+
     height: 7px;
+
     background: #b98b62;
 }
 
-.r1 { top: 22px; }
-.r2 { top: 48px; }
-.r3 { top: 74px; }
+.r1 {
+    top: 22px;
+}
 
-/* Packaging table */
+.r2 {
+    top: 48px;
+}
+
+.r3 {
+    top: 74px;
+}
+
+/* =========================================================
+   PACKAGING TABLE
+   ========================================================= */
 
 #packingTable {
+    position: absolute;
+
     right: 7%;
     bottom: 8%;
+
     width: 210px;
     height: 120px;
+
     background: #a96f48;
+
     border: 7px solid #68432d;
+
     box-shadow: 7px 7px 0 rgba(70,45,30,.15);
 }
 
 #boxStack {
     position: absolute;
+
     left: 22px;
     top: 25px;
+
     font-size: 42px;
+
     cursor: grab;
 }
 
 #packageArea {
     position: absolute;
+
     right: 20px;
     top: 25px;
+
     width: 70px;
     height: 55px;
+
     border: 4px dashed #e2c28b;
+
     text-align: center;
     line-height: 48px;
+
+    font-size: 25px;
 }
 
-/* Shop counter */
+/* =========================================================
+   SHOP COUNTER
+   ========================================================= */
 
 #shopCounter {
+    position: absolute;
+
     left: 8%;
     bottom: 8%;
+
     width: 190px;
     height: 120px;
+
     background: #805437;
+
     border: 7px solid #543524;
+
     box-shadow: 7px 7px 0 rgba(70,45,30,.15);
+
     cursor: pointer;
 }
 
 #shopAwning {
     position: absolute;
+
     left: -5px;
     top: -35px;
+
     width: calc(100% + 10px);
     height: 32px;
+
     background:
         repeating-linear-gradient(
             90deg,
@@ -496,61 +709,97 @@ html, body {
             #f0c47c 24px,
             #f0c47c 48px
         );
+
     border: 5px solid #593727;
 }
 
 #shopWindow {
     position: absolute;
+
     left: 25px;
     top: 25px;
+
     width: 140px;
     height: 60px;
+
     background: #b5d4cf;
+
     border: 6px solid #4f392e;
 }
 
-/* ---------- INGREDIENT STORAGE ---------- */
+/* =========================================================
+   STORAGE
+   ========================================================= */
 
 #storage {
     position: absolute;
+
     right: 3%;
     top: 45%;
+
     width: 150px;
     height: 190px;
+
     background: #805b42;
+
     border: 7px solid #563927;
+
     box-shadow: 7px 7px 0 rgba(70,45,30,.15);
 }
 
 #storageTitle {
-    text-align: center;
-    color: #f8dfae;
     padding: 7px;
+
+    text-align: center;
+
+    color: #f8dfae;
+
     font-weight: bold;
+
+    font-size: 13px;
 }
 
 .inventoryItem {
-    background: #d9b57c;
-    border: 3px solid #66452f;
     margin: 5px;
+
     padding: 6px;
-    cursor: grab;
+
+    background: #d9b57c;
+
+    border: 3px solid #66452f;
+
     text-align: center;
-    font-size: 12px;
+
+    font-size: 11px;
+
+    cursor: grab;
 }
 
 .inventoryItem:hover {
     background: #ebca91;
 }
 
-/* ---------- PHYSICAL ITEMS ---------- */
+.inventoryItem:active {
+    cursor: grabbing;
+}
+
+/* =========================================================
+   DRAGGABLE ITEMS
+   ========================================================= */
 
 .draggable {
     position: absolute;
-    z-index: 20;
-    cursor: grab;
+
+    z-index: 30;
+
     font-size: 31px;
-    filter: drop-shadow(2px 3px 0 rgba(50,30,20,.25));
+
+    cursor: grab;
+
+    filter:
+        drop-shadow(
+            2px 3px 0 rgba(50,30,20,.25)
+        );
 }
 
 .draggable:active {
@@ -558,127 +807,77 @@ html, body {
 }
 
 .itemName {
-    font-size: 10px;
-    background: #fff0c8;
     padding: 2px 4px;
+
+    background: #fff0c8;
+
     border: 2px solid #6c4b37;
+
+    font-size: 10px;
+
     white-space: nowrap;
-    margin-top: 3px;
 }
 
-/* ---------- QUEST PANEL ---------- */
+/* =========================================================
+   QUEST PANEL
+   ========================================================= */
 
 #questPanel {
     position: absolute;
+
     left: 18px;
     bottom: 18px;
+
     width: 245px;
-    background: #f1d9a5;
-    border: 5px solid #65432e;
+
     padding: 10px;
+
+    background: #f1d9a5;
+
+    border: 5px solid #65432e;
+
     z-index: 40;
+
     box-shadow: 5px 5px 0 rgba(70,45,30,.2);
 }
 
 #questTitle {
-    font-weight: bold;
-    font-size: 15px;
     margin-bottom: 5px;
+
+    font-size: 15px;
+    font-weight: bold;
 }
 
 #questText {
     font-size: 12px;
+
     line-height: 1.5;
 }
 
-/* ---------- SHOP WINDOW ---------- */
-
-#shopPanel {
-    display: none;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 570px;
-    max-height: 80vh;
-    overflow-y: auto;
-    background: #efd9a9;
-    border: 7px solid #593b2a;
-    z-index: 100;
-    box-shadow: 12px 12px 0 rgba(50,30,20,.3);
-}
-
-#shopHeader {
-    background: #80543a;
-    color: #fff0ca;
-    padding: 15px;
-    font-size: 21px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-#closeShop {
-    background: #593b2a;
-    color: white;
-    border: 3px solid #3b281f;
-    cursor: pointer;
-    padding: 3px 9px;
-    font-family: inherit;
-}
-
-.shopSection {
-    padding: 12px;
-    border-bottom: 4px solid #c09b68;
-}
-
-.shopSection h3 {
-    margin: 0 0 8px 0;
-    color: #633e2c;
-}
-
-.shopItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f7e7bf;
-    border: 3px solid #96724e;
-    padding: 9px;
-    margin: 7px 0;
-}
-
-.buyButton {
-    background: #8d6747;
-    color: white;
-    border: 3px solid #573a2b;
-    padding: 6px 10px;
-    font-family: inherit;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.buyButton:hover {
-    background: #ad8057;
-}
-
-.buyButton:disabled {
-    background: #756c61;
-    cursor: not-allowed;
-}
-
-/* ---------- NOTIFICATION ---------- */
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
 
 #notification {
     position: absolute;
+
     left: 50%;
     top: 78px;
+
     transform: translateX(-50%);
-    background: #fff0c7;
-    border: 4px solid #66432f;
+
     padding: 9px 16px;
+
+    background: #fff0c7;
+
+    border: 4px solid #66432f;
+
     z-index: 90;
+
     opacity: 0;
+
     transition: opacity .25s;
+
     pointer-events: none;
 }
 
@@ -686,20 +885,603 @@ html, body {
     opacity: 1;
 }
 
-/* ---------- HELP ---------- */
+/* =========================================================
+   SECRET RECIPE PAPER
+   ========================================================= */
+
+#recipePaper {
+    position: absolute;
+
+    left: 24px;
+    bottom: 24px;
+
+    width: 125px;
+    height: 105px;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #f0dcae 0px,
+            #f0dcae 7px,
+            #e8ce9a 8px,
+            #f0dcae 9px
+        );
+
+    border: 4px solid #765137;
+
+    transform: rotate(-4deg);
+
+    cursor: pointer;
+
+    z-index: 60;
+
+    box-shadow:
+        5px 6px 0 rgba(65,42,27,.25);
+
+    transition:
+        transform .15s,
+        box-shadow .15s;
+}
+
+#recipePaper:hover {
+    transform:
+        rotate(-2deg)
+        translateY(-3px);
+
+    box-shadow:
+        6px 9px 0 rgba(65,42,27,.3);
+}
+
+.paperCorner {
+    position: absolute;
+
+    top: -4px;
+    right: -4px;
+
+    width: 30px;
+    height: 30px;
+
+    background: #c49a68;
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 0,
+            100% 100%
+        );
+
+    opacity: .8;
+}
+
+.paperClip {
+    position: absolute;
+
+    width: 18px;
+    height: 30px;
+
+    right: 12px;
+    top: -13px;
+
+    border: 4px solid #70665b;
+
+    border-radius: 10px;
+
+    transform: rotate(8deg);
+}
+
+.paperTitle {
+    margin-top: 17px;
+
+    text-align: center;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #5c3828;
+
+    letter-spacing: 2px;
+}
+
+.paperSubtitle {
+    text-align: center;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: #78422d;
+
+    letter-spacing: 2px;
+}
+
+.paperLine {
+    width: 75%;
+    height: 2px;
+
+    background: #876044;
+
+    margin: 8px auto;
+}
+
+.paperSmallText {
+    text-align: center;
+
+    font-size: 8px;
+
+    color: #765137;
+}
+
+/* =========================================================
+   RECIPE OVERLAY
+   ========================================================= */
+
+#recipeOverlay {
+    display: none;
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    background:
+        rgba(45,30,23,.48);
+
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: blur(2px);
+}
+
+#recipeCard {
+    position: relative;
+
+    width: 650px;
+    max-width: 90vw;
+
+    max-height: 88vh;
+
+    overflow-y: auto;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #f3dfb3 0px,
+            #f3dfb3 25px,
+            #efd8a5 26px,
+            #f3dfb3 27px
+        );
+
+    border: 8px solid #65432d;
+
+    box-shadow:
+        14px 14px 0 rgba(42,28,20,.4);
+
+    color: #4d3225;
+
+    animation:
+        recipeAppear .2s ease-out;
+}
+
+@keyframes recipeAppear {
+
+    from {
+        transform:
+            scale(.92)
+            rotate(-1deg);
+
+        opacity: 0;
+    }
+
+    to {
+        transform:
+            scale(1)
+            rotate(0deg);
+
+        opacity: 1;
+    }
+}
+
+/* =========================================================
+   RECIPE CLOSE
+   ========================================================= */
+
+#recipeClose {
+    position: absolute;
+
+    right: 10px;
+    top: 10px;
+
+    width: 42px;
+    height: 42px;
+
+    background: #80513a;
+
+    border: 4px solid #523526;
+
+    color: #fff1cf;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 10;
+}
+
+#recipeClose:hover {
+    background: #a66c4b;
+}
+
+#recipeClose:active {
+    transform: translateY(2px);
+}
+
+/* =========================================================
+   RECIPE HEADER
+   ========================================================= */
+
+#recipeHeader {
+    text-align: center;
+
+    padding: 22px 50px 15px;
+
+    border-bottom:
+        4px double #98704a;
+}
+
+.recipeHeaderSmall {
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    color: #806046;
+
+    margin-bottom: 7px;
+}
+
+.recipeHeaderBig {
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #623c2b;
+
+    text-shadow: 1px 1px #e6c995;
+}
+
+.recipeStars {
+    margin-top: 8px;
+
+    color: #a27043;
+
+    letter-spacing: 8px;
+}
+
+/* =========================================================
+   RECIPE BODY
+   ========================================================= */
+
+#recipeBody {
+    display: flex;
+
+    min-height: 300px;
+
+    padding: 20px 30px;
+}
+
+#recipeBowlArea {
+    width: 50%;
+
+    text-align: center;
+
+    border-right:
+        3px dashed #a68157;
+
+    padding-right: 25px;
+}
+
+.recipeLabel {
+    font-size: 13px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    color: #71452f;
+
+    margin-bottom: 14px;
+}
+
+/* =========================================================
+   DETAILED RECIPE BOWL
+   ========================================================= */
+
+#bigRecipeBowl {
+    position: relative;
+
+    width: 235px;
+    height: 150px;
+
+    margin: 15px auto 10px;
+}
+
+#bowlInside {
+    position: absolute;
+
+    left: 20px;
+    right: 20px;
+
+    top: 40px;
+
+    height: 88px;
+
+    background:
+        radial-gradient(
+            ellipse at 45% 25%,
+            #b97a43 0%,
+            #95552f 38%,
+            #75402b 75%
+        );
+
+    border:
+        7px solid #6b4935;
+
+    border-top: 0;
+
+    border-radius:
+        0 0 115px 115px;
+
+    overflow: hidden;
+}
+
+#bowlInside::after {
+    content: "";
+
+    position: absolute;
+
+    left: 12px;
+    right: 12px;
+
+    top: 4px;
+
+    height: 50px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            #a96132,
+            #7e4429
+        );
+
+    border-radius: 50%;
+}
+
+#bowlRim {
+    position: absolute;
+
+    left: 9px;
+    top: 27px;
+
+    width: 217px;
+    height: 48px;
+
+    border:
+        8px solid #6b4935;
+
+    background:
+        linear-gradient(
+            180deg,
+            #e5dfcf,
+            #c8c5b8
+        );
+
+    border-radius: 50%;
+
+    z-index: 4;
+}
+
+.batterSwirl {
+    position: absolute;
+
+    width: 70px;
+    height: 18px;
+
+    border:
+        4px solid rgba(218,150,88,.7);
+
+    border-left-color: transparent;
+
+    border-radius: 50%;
+
+    z-index: 5;
+}
+
+.swirl1 {
+    left: 25px;
+    top: 17px;
+
+    transform: rotate(-10deg);
+}
+
+.swirl2 {
+    left: 80px;
+    top: 25px;
+
+    transform: rotate(8deg);
+}
+
+.swirl3 {
+    left: 55px;
+    top: 5px;
+
+    transform: rotate(-4deg);
+}
+
+#bowlHighlight {
+    position: absolute;
+
+    left: 29px;
+    top: 43px;
+
+    width: 24px;
+    height: 9px;
+
+    background: rgba(255,255,255,.5);
+
+    border-radius: 50%;
+
+    z-index: 6;
+}
+
+.recipeArrow {
+    font-size: 25px;
+
+    color: #8b5b3c;
+
+    margin-top: 5px;
+}
+
+.recipeInstruction {
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    color: #70503b;
+}
+
+/* =========================================================
+   RECIPE INGREDIENTS
+   ========================================================= */
+
+#ingredientsRecipe {
+    width: 50%;
+
+    padding-left: 28px;
+}
+
+.recipeIngredient {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background:
+        rgba(255,245,214,.55);
+
+    border:
+        3px solid #b18b5d;
+
+    margin: 8px 0;
+
+    padding: 7px 10px;
+}
+
+.recipeIcon {
+    font-size: 27px;
+
+    width: 40px;
+
+    text-align: center;
+}
+
+.recipeIngredient b {
+    display: block;
+
+    font-size: 14px;
+}
+
+.recipeIngredient small {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #806148;
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   RECIPE BOTTOM
+   ========================================================= */
+
+#recipeBottom {
+    padding:
+        13px 30px 20px;
+
+    border-top:
+        4px double #98704a;
+}
+
+.recipeTip {
+    font-weight: bold;
+
+    font-size: 12px;
+
+    color: #70442f;
+}
+
+.recipeNote {
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    font-style: italic;
+
+    color: #806149;
+}
+
+.recipeBottomLine {
+    height: 1px;
+
+    background: #b28a5b;
+
+    margin:
+        13px 0 8px;
+}
+
+.recipeFooter {
+    text-align: center;
+
+    font-size: 8px;
+
+    color: #927050;
+
+    letter-spacing: 2px;
+}
+
+/* =========================================================
+   HELP
+   ========================================================= */
 
 #helpPanel {
     display: none;
+
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     transform: translate(-50%, -50%);
+
     width: 500px;
+    max-width: 90vw;
+
     background: #f2d9a6;
+
     border: 7px solid #593b2a;
+
     z-index: 110;
+
     padding: 20px;
-    box-shadow: 10px 10px 0 rgba(50,30,20,.3);
+
+    box-shadow:
+        10px 10px 0 rgba(50,30,20,.3);
 }
 
 #helpPanel h2 {
@@ -708,24 +1490,142 @@ html, body {
 
 #helpPanel p {
     font-size: 14px;
+
     line-height: 1.6;
 }
 
 .closeHelp {
     background: #80543a;
+
     color: white;
+
     border: 3px solid #593b2a;
+
     padding: 7px 14px;
+
     cursor: pointer;
+
     font-family: inherit;
 }
 
-/* ---------- RESPONSIVE ---------- */
+/* =========================================================
+   SHOP
+   ========================================================= */
+
+#shopPanel {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 570px;
+    max-width: 90vw;
+
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    background: #efd9a9;
+
+    border: 7px solid #593b2a;
+
+    z-index: 100;
+
+    box-shadow:
+        12px 12px 0 rgba(50,30,20,.3);
+}
+
+#shopHeader {
+    background: #80543a;
+
+    color: #fff0ca;
+
+    padding: 15px;
+
+    font-size: 21px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+#closeShop {
+    background: #593b2a;
+
+    color: white;
+
+    border: 3px solid #3b281f;
+
+    cursor: pointer;
+
+    padding: 3px 9px;
+
+    font-family: inherit;
+}
+
+.shopSection {
+    padding: 12px;
+
+    border-bottom:
+        4px solid #c09b68;
+}
+
+.shopSection h3 {
+    margin: 0 0 8px;
+
+    color: #633e2c;
+}
+
+.shopItem {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background: #f7e7bf;
+
+    border: 3px solid #96724e;
+
+    padding: 9px;
+
+    margin: 7px 0;
+}
+
+.buyButton {
+    background: #8d6747;
+
+    color: white;
+
+    border: 3px solid #573a2b;
+
+    padding: 6px 10px;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.buyButton:hover {
+    background: #ad8057;
+}
+
+/* =========================================================
+   SMALL SCREEN
+   ========================================================= */
 
 @media (max-width: 900px) {
 
     #gameTitle {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     #bakeryBuilding {
@@ -734,25 +1634,52 @@ html, body {
     }
 
     #workTable {
-        transform: scale(.85);
-        transform-origin: top left;
+        transform: scale(.75);
+
+        transform-origin:
+            top left;
     }
 
     #oven {
-        transform: scale(.8);
-        transform-origin: top right;
+        transform: scale(.7);
+
+        transform-origin:
+            top right;
     }
 
     #storage {
-        transform: scale(.75);
-        transform-origin: top right;
+        transform: scale(.7);
+
+        transform-origin:
+            top right;
     }
 
     #questPanel {
-        transform: scale(.8);
-        transform-origin: bottom left;
+        transform: scale(.75);
+
+        transform-origin:
+            bottom left;
+    }
+
+    #recipeBody {
+        flex-direction: column;
+    }
+
+    #recipeBowlArea,
+    #ingredientsRecipe {
+        width: 100%;
+
+        border-right: 0;
+
+        padding: 10px;
+    }
+
+    #recipeBowlArea {
+        border-bottom:
+            3px dashed #a68157;
     }
 }
+
 </style>
 </head>
 
@@ -760,7 +1687,10 @@ html, body {
 
 <div id="game">
 
-    <!-- TOP BAR -->
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
     <div id="topBar">
 
         <div id="gameTitle">
@@ -771,49 +1701,63 @@ html, body {
             💰 $<span id="moneyValue">30</span>
         </div>
 
-        <button class="topButton" onclick="openShop()">
+        <button class="topButton"
+                onclick="openShop()">
             🛒 Shop
         </button>
 
-        <button class="topButton" onclick="openHelp()">
+        <button class="topButton"
+                onclick="openHelp()">
             ?
         </button>
 
     </div>
 
-    <!-- WORLD -->
+
+    <!-- =====================================================
+         WORLD
+         ===================================================== -->
+
     <div id="world">
 
         <div id="ground"></div>
 
+
         <!-- TREES -->
+
         <div class="tree tree1">
-            <div class="leaves"></div>
-            <div class="trunk"></div>
+            <div class="treeLeaves"></div>
+            <div class="treeTrunk"></div>
         </div>
 
         <div class="tree tree2">
-            <div class="leaves"></div>
-            <div class="trunk"></div>
+            <div class="treeLeaves"></div>
+            <div class="treeTrunk"></div>
         </div>
 
         <div class="tree tree3">
-            <div class="leaves"></div>
-            <div class="trunk"></div>
+            <div class="treeLeaves"></div>
+            <div class="treeTrunk"></div>
         </div>
 
         <div class="tree tree4">
-            <div class="leaves"></div>
-            <div class="trunk"></div>
+            <div class="treeLeaves"></div>
+            <div class="treeTrunk"></div>
         </div>
+
+
+        <!-- STONES -->
 
         <div class="stone stone1"></div>
         <div class="stone stone2"></div>
         <div class="stone stone3"></div>
         <div class="stone stone4"></div>
-        <div class="stone stone5"></div>
 
-        <!-- BAKERY -->
+
+        <!-- =================================================
+             BAKERY
+             ================================================= -->
+
         <div id="bakeryBuilding">
 
             <div id="roof"></div>
@@ -822,15 +1766,21 @@ html, body {
                 🍫 LITTLE BROWNIE BAKERY
             </div>
 
+
             <div id="floor">
 
-                <!-- WORK TABLE -->
-                <div id="workTable" class="object">
+
+                <!-- =================================================
+                     MIXING TABLE
+                     ================================================= -->
+
+                <div id="workTable">
 
                     <div class="tableTop"></div>
 
                     <div class="tableLeg leg1"></div>
                     <div class="tableLeg leg2"></div>
+
 
                     <div id="bowl">
 
@@ -842,19 +1792,26 @@ html, body {
 
                     </div>
 
+
                     <div class="objectLabel">
                         Baking Table
                     </div>
 
                 </div>
 
-                <!-- OVEN -->
-                <div id="oven" class="object">
+
+                <!-- =================================================
+                     OVEN
+                     ================================================= -->
+
+                <div id="oven">
 
                     <div id="ovenTop"></div>
 
                     <div id="ovenDoor">
+
                         <div id="ovenGlow"></div>
+
                     </div>
 
                     <div id="ovenHandle"></div>
@@ -869,8 +1826,12 @@ html, body {
 
                 </div>
 
-                <!-- COOLING RACK -->
-                <div id="coolingRack" class="object">
+
+                <!-- =================================================
+                     COOLING RACK
+                     ================================================= -->
+
+                <div id="coolingRack">
 
                     <div class="rackLine r1"></div>
                     <div class="rackLine r2"></div>
@@ -882,10 +1843,14 @@ html, body {
 
                 </div>
 
-                <!-- PACKAGING TABLE -->
-                <div id="packingTable" class="object">
 
-                    <div id="boxStack" title="Packaging boxes">
+                <!-- =================================================
+                     PACKAGING
+                     ================================================= -->
+
+                <div id="packingTable">
+
+                    <div id="boxStack">
                         📦
                     </div>
 
@@ -899,58 +1864,100 @@ html, body {
 
                 </div>
 
-                <!-- SHOP -->
-                <div id="shopCounter" class="object"
+
+                <!-- =================================================
+                     SHOP
+                     ================================================= -->
+
+                <div id="shopCounter"
                      onclick="sellPackagedBrownie()">
 
                     <div id="shopAwning"></div>
+
                     <div id="shopWindow"></div>
 
                     <div class="objectLabel"
-                         style="position:absolute; bottom:-35px; width:100%;">
+                         style="
+                         position:absolute;
+                         bottom:-35px;
+                         width:100%;
+                         ">
                         Shop
                     </div>
 
                 </div>
 
-                <!-- STORAGE -->
-                <div id="storage" class="object">
+
+                <!-- =================================================
+                     STORAGE
+                     ================================================= -->
+
+                <div id="storage">
 
                     <div id="storageTitle">
-                        STORAGE
+                        INGREDIENT STORAGE
                     </div>
+
 
                     <div class="inventoryItem"
                          draggable="true"
                          data-item="flour">
-                        🌾 Flour × <span id="flourCount">3</span>
+
+                        🌾 Flour ×
+                        <span id="flourCount">
+                            3
+                        </span>
+
                     </div>
+
 
                     <div class="inventoryItem"
                          draggable="true"
                          data-item="milk">
-                        🥛 Milk × <span id="milkCount">3</span>
+
+                        🥛 Milk ×
+                        <span id="milkCount">
+                            3
+                        </span>
+
                     </div>
+
 
                     <div class="inventoryItem"
                          draggable="true"
                          data-item="chocolate">
-                        🍫 Chocolate × <span id="chocolateCount">3</span>
+
+                        🍫 Chocolate ×
+                        <span id="chocolateCount">
+                            3
+                        </span>
+
                     </div>
+
 
                     <div class="inventoryItem"
                          draggable="true"
                          data-item="butter">
-                        🧈 Butter × <span id="butterCount">3</span>
+
+                        🧈 Butter ×
+                        <span id="butterCount">
+                            3
+                        </span>
+
                     </div>
 
                 </div>
+
 
             </div>
 
         </div>
 
-        <!-- QUEST -->
+
+        <!-- =====================================================
+             QUEST
+             ===================================================== -->
+
         <div id="questPanel">
 
             <div id="questTitle">
@@ -958,23 +1965,271 @@ html, body {
             </div>
 
             <div id="questText">
-                Make your first brownie.<br><br>
-                Drag the ingredients into the bowl.
+                Make your first brownie.
+                <br><br>
+                Drag the ingredients from storage
+                into the bowl.
             </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SECRET RECIPE PAPER
+             ===================================================== -->
+
+        <div id="recipePaper"
+             onclick="openRecipe()">
+
+            <div class="paperCorner"></div>
+
+            <div class="paperClip"></div>
+
+            <div class="paperTitle">
+                SECRET
+            </div>
+
+            <div class="paperSubtitle">
+                RECIPE
+            </div>
+
+            <div class="paperLine"></div>
+
+            <div class="paperSmallText">
+                ✦ brownie recipe ✦
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         NOTIFICATION
+         ===================================================== -->
+
+    <div id="notification"></div>
+
+
+    <!-- =====================================================
+         RECIPE WINDOW
+         ===================================================== -->
+
+    <div id="recipeOverlay">
+
+        <div id="recipeCard">
+
+
+            <button id="recipeClose"
+                    onclick="closeRecipe()">
+                X
+            </button>
+
+
+            <div id="recipeHeader">
+
+                <div class="recipeHeaderSmall">
+                    LITTLE BROWNIE BAKERY
+                </div>
+
+                <div class="recipeHeaderBig">
+                    🍫 SECRET BROWNIE RECIPE
+                </div>
+
+                <div class="recipeStars">
+                    ✦ ✦ ✦ ✦ ✦
+                </div>
+
+            </div>
+
+
+            <div id="recipeBody">
+
+
+                <!-- BOWL -->
+
+                <div id="recipeBowlArea">
+
+                    <div class="recipeLabel">
+                        THE MIXING BOWL
+                    </div>
+
+
+                    <div id="bigRecipeBowl">
+
+                        <div id="bowlInside">
+
+                            <div class="batterSwirl swirl1"></div>
+
+                            <div class="batterSwirl swirl2"></div>
+
+                            <div class="batterSwirl swirl3"></div>
+
+                        </div>
+
+
+                        <div id="bowlRim"></div>
+
+                        <div id="bowlHighlight"></div>
+
+                    </div>
+
+
+                    <div class="recipeArrow">
+                        ↓
+                    </div>
+
+
+                    <div class="recipeInstruction">
+
+                        Put everything into
+                        <br>
+
+                        the bowl before mixing.
+
+                    </div>
+
+                </div>
+
+
+                <!-- INGREDIENTS -->
+
+                <div id="ingredientsRecipe">
+
+                    <div class="recipeLabel">
+                        INGREDIENTS
+                    </div>
+
+
+                    <div class="recipeIngredient">
+
+                        <span class="recipeIcon">
+                            🌾
+                        </span>
+
+                        <span>
+                            <b>Flour</b>
+                            <small>
+                                1 scoop
+                            </small>
+                        </span>
+
+                    </div>
+
+
+                    <div class="recipeIngredient">
+
+                        <span class="recipeIcon">
+                            🥛
+                        </span>
+
+                        <span>
+                            <b>Milk</b>
+                            <small>
+                                1 bottle
+                            </small>
+                        </span>
+
+                    </div>
+
+
+                    <div class="recipeIngredient">
+
+                        <span class="recipeIcon">
+                            🍫
+                        </span>
+
+                        <span>
+                            <b>Chocolate</b>
+                            <small>
+                                2 pieces
+                            </small>
+                        </span>
+
+                    </div>
+
+
+                    <div class="recipeIngredient">
+
+                        <span class="recipeIcon">
+                            🧈
+                        </span>
+
+                        <span>
+                            <b>Butter</b>
+                            <small>
+                                1 block
+                            </small>
+                        </span>
+
+                    </div>
+
+
+                    <div class="recipeIngredient">
+
+                        <span class="recipeIcon">
+                            🍬
+                        </span>
+
+                        <span>
+                            <b>Sugar</b>
+                            <small>
+                                1 scoop
+                            </small>
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECIPE NOTES -->
+
+            <div id="recipeBottom">
+
+                <div class="recipeTip">
+                    ✎ SECRET BAKER'S NOTE
+                </div>
+
+                <div class="recipeNote">
+
+                    Mix slowly until the batter
+                    becomes smooth and glossy.
+
+                </div>
+
+                <div class="recipeBottomLine"></div>
+
+                <div class="recipeFooter">
+
+                    LITTLE BROWNIE BAKERY
+                    •
+                    RECIPE No. 001
+
+                </div>
+
+            </div>
+
 
         </div>
 
     </div>
 
-    <!-- NOTIFICATION -->
-    <div id="notification"></div>
 
-    <!-- SHOP -->
+    <!-- =====================================================
+         SHOP WINDOW
+         ===================================================== -->
+
     <div id="shopPanel">
 
         <div id="shopHeader">
 
-            <span>🛒 Bakery Shop</span>
+            <span>
+                🛒 Bakery Shop
+            </span>
 
             <button id="closeShop"
                     onclick="closeShop()">
@@ -983,52 +2238,84 @@ html, body {
 
         </div>
 
-        <div class="shopSection">
-
-            <h3>🥣 Ingredients</h3>
-
-            <div class="shopItem">
-                <span>🌾 Flour</span>
-                <button class="buyButton"
-                        onclick="buyIngredient('flour', 3)">
-                    $3
-                </button>
-            </div>
-
-            <div class="shopItem">
-                <span>🥛 Milk</span>
-                <button class="buyButton"
-                        onclick="buyIngredient('milk', 3)">
-                    $3
-                </button>
-            </div>
-
-            <div class="shopItem">
-                <span>🍫 Chocolate</span>
-                <button class="buyButton"
-                        onclick="buyIngredient('chocolate', 4)">
-                    $4
-                </button>
-            </div>
-
-            <div class="shopItem">
-                <span>🧈 Butter</span>
-                <button class="buyButton"
-                        onclick="buyIngredient('butter', 4)">
-                    $4
-                </button>
-            </div>
-
-        </div>
 
         <div class="shopSection">
 
-            <h3>📦 Packaging</h3>
+            <h3>
+                🥣 Ingredients
+            </h3>
+
 
             <div class="shopItem">
 
                 <span>
-                    Cardboard Brownie Box<br>
+                    🌾 Flour
+                </span>
+
+                <button class="buyButton"
+                        onclick="buyIngredient('flour',3)">
+                    $3
+                </button>
+
+            </div>
+
+
+            <div class="shopItem">
+
+                <span>
+                    🥛 Milk
+                </span>
+
+                <button class="buyButton"
+                        onclick="buyIngredient('milk',3)">
+                    $3
+                </button>
+
+            </div>
+
+
+            <div class="shopItem">
+
+                <span>
+                    🍫 Chocolate
+                </span>
+
+                <button class="buyButton"
+                        onclick="buyIngredient('chocolate',4)">
+                    $4
+                </button>
+
+            </div>
+
+
+            <div class="shopItem">
+
+                <span>
+                    🧈 Butter
+                </span>
+
+                <button class="buyButton"
+                        onclick="buyIngredient('butter',4)">
+                    $4
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="shopSection">
+
+            <h3>
+                📦 Packaging
+            </h3>
+
+
+            <div class="shopItem">
+
+                <span>
+                    Cardboard Brownie Box
+                    <br>
                     <small>
                         Required to sell brownies
                     </small>
@@ -1043,9 +2330,13 @@ html, body {
 
         </div>
 
+
         <div class="shopSection">
 
-            <h3>🔥 Equipment</h3>
+            <h3>
+                🔥 Equipment
+            </h3>
+
 
             <div class="shopItem">
 
@@ -1059,6 +2350,7 @@ html, body {
                 </button>
 
             </div>
+
 
             <div class="shopItem">
 
@@ -1075,9 +2367,13 @@ html, body {
 
         </div>
 
+
         <div class="shopSection">
 
-            <h3>🔒 Coming Later</h3>
+            <h3>
+                🔒 Coming Later
+            </h3>
+
 
             <div class="shopItem">
                 🍯 Caramel Brownies
@@ -1107,44 +2403,47 @@ html, body {
 
     </div>
 
-    <!-- HELP -->
+
+    <!-- =====================================================
+         HELP
+         ===================================================== -->
+
     <div id="helpPanel">
 
-        <h2>🍫 How to play</h2>
+        <h2>
+            🍫 How to play
+        </h2>
 
         <p>
             Welcome to your tiny brownie bakery.
         </p>
 
         <p>
-            Start by dragging ingredients from your
-            storage into the mixing bowl.
+            Start by dragging ingredients from
+            your storage into the mixing bowl.
         </p>
 
         <p>
-            Once you have enough ingredients,
+            Once all the ingredients are inside,
             hold your mouse on the bowl to mix.
         </p>
 
         <p>
-            Later you will be able to drag the batter
-            into a pan, bake it, cool it, package it,
-            and sell it in your shop.
-        </p>
-
-        <p>
             The bakery is designed to grow slowly.
-            Take your time. There is no rush.
+            There is no rush.
         </p>
 
         <button class="closeHelp"
                 onclick="closeHelp()">
+
             Back to Bakery
+
         </button>
 
     </div>
 
 </div>
+
 
 <script>
 
@@ -1155,37 +2454,62 @@ html, body {
 let money = 30;
 
 let inventory = {
+
     flour: 3,
+
     milk: 3,
+
     chocolate: 3,
+
     butter: 3,
+
     boxes: 0
+
 };
+
 
 let bowlIngredients = {
+
     flour: false,
+
     milk: false,
+
     chocolate: false,
+
     butter: false
+
 };
 
+
 let bowlReady = false;
+
 let mixing = false;
+
 let mixingProgress = 0;
 
 let batterReady = false;
+
 let panReady = false;
 
 let baking = false;
+
 let bakingProgress = 0;
 
 let browniesReady = false;
+
 let packagedBrownie = false;
 
+let packageSealed = false;
+
+
 let upgrades = {
+
     oven: false,
+
     bowl: false
+
 };
+
 
 /* =========================================================
    BASIC UI
@@ -1197,6 +2521,7 @@ function updateMoney() {
         money;
 
 }
+
 
 function updateInventory() {
 
@@ -1214,6 +2539,7 @@ function updateInventory() {
 
 }
 
+
 function notify(message) {
 
     const box =
@@ -1223,11 +2549,48 @@ function notify(message) {
 
     box.classList.add("show");
 
-    setTimeout(() => {
+    setTimeout(function() {
+
         box.classList.remove("show");
+
     }, 2200);
 
 }
+
+
+/* =========================================================
+   SECRET RECIPE
+   ========================================================= */
+
+function openRecipe() {
+
+    document.getElementById("recipeOverlay")
+        .style.display = "flex";
+
+}
+
+
+function closeRecipe() {
+
+    document.getElementById("recipeOverlay")
+        .style.display = "none";
+
+}
+
+
+/* Clicking outside the recipe closes it */
+
+document.getElementById("recipeOverlay")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeRecipe();
+
+        }
+
+    });
+
 
 /* =========================================================
    SHOP
@@ -1235,25 +2598,30 @@ function notify(message) {
 
 function openShop() {
 
-    document.getElementById("shopPanel").style.display =
-        "block";
+    document.getElementById("shopPanel")
+        .style.display = "block";
 
 }
+
 
 function closeShop() {
 
-    document.getElementById("shopPanel").style.display =
-        "none";
+    document.getElementById("shopPanel")
+        .style.display = "none";
 
 }
+
 
 function buyIngredient(type, price) {
 
     if (money < price) {
 
-        notify("You don't have enough money.");
+        notify(
+            "You don't have enough money."
+        );
 
         return;
+
     }
 
     money -= price;
@@ -1261,11 +2629,15 @@ function buyIngredient(type, price) {
     inventory[type]++;
 
     updateMoney();
+
     updateInventory();
 
-    notify("Bought 1 " + type + ".");
+    notify(
+        "Bought 1 " + type + "."
+    );
 
 }
+
 
 function buyBox() {
 
@@ -1273,9 +2645,12 @@ function buyBox() {
 
     if (money < price) {
 
-        notify("You need $5 for a box.");
+        notify(
+            "You need $5 for a box."
+        );
 
         return;
+
     }
 
     money -= price;
@@ -1285,28 +2660,38 @@ function buyBox() {
     updateMoney();
 
     notify(
-        "Bought a brownie box. Boxes: "
-        + inventory.boxes
+        "Bought a brownie box."
     );
 
 }
+
 
 function buyUpgrade(type) {
 
     if (upgrades[type]) {
 
-        notify("You already own this.");
+        notify(
+            "You already own this upgrade."
+        );
 
         return;
+
     }
 
-    let price = type === "oven" ? 75 : 50;
+    const price =
+        type === "oven"
+        ? 75
+        : 50;
+
 
     if (money < price) {
 
-        notify("You need $" + price + ".");
+        notify(
+            "You need $" + price + "."
+        );
 
         return;
+
     }
 
     money -= price;
@@ -1316,220 +2701,334 @@ function buyUpgrade(type) {
     updateMoney();
 
     notify(
-        type === "oven"
-        ? "Your oven is now better!"
-        : "Your mixing bowl is now better!"
+        "Upgrade purchased!"
     );
 
 }
 
+
 /* =========================================================
-   DRAG AND DROP
+   STORAGE DRAGGING
    ========================================================= */
 
-let draggedItem = null;
-
 document.querySelectorAll(".inventoryItem")
-.forEach(item => {
+.forEach(function(item) {
 
-    item.addEventListener("dragstart", function(event) {
+    item.addEventListener(
+        "dragstart",
+        function(event) {
 
-        draggedItem =
-            this.dataset.item;
+            event.dataTransfer.setData(
+                "text/plain",
+                this.dataset.item
+            );
 
-        event.dataTransfer.setData(
-            "text/plain",
-            draggedItem
-        );
-
-    });
+        }
+    );
 
 });
+
+
+/* =========================================================
+   BOWL DROP
+   ========================================================= */
 
 const bowl =
     document.getElementById("bowl");
 
-bowl.addEventListener("dragover", function(event) {
 
-    event.preventDefault();
+bowl.addEventListener(
+    "dragover",
+    function(event) {
 
-});
+        event.preventDefault();
 
-bowl.addEventListener("drop", function(event) {
+    }
+);
 
-    event.preventDefault();
 
-    const item =
-        event.dataTransfer.getData("text/plain");
+bowl.addEventListener(
+    "drop",
+    function(event) {
 
-    addIngredientToBowl(item);
+        event.preventDefault();
 
-});
+        const item =
+            event.dataTransfer.getData("text/plain");
+
+        addIngredientToBowl(item);
+
+    }
+);
+
 
 /* =========================================================
-   BOWL
+   ADD INGREDIENT
    ========================================================= */
 
 function addIngredientToBowl(item) {
 
     const allowed = [
+
         "flour",
+
         "milk",
+
         "chocolate",
+
         "butter"
+
     ];
+
 
     if (!allowed.includes(item)) {
 
-        notify("That can't go into the bowl.");
+        notify(
+            "That doesn't belong in this recipe."
+        );
 
         return;
+
     }
+
 
     if (bowlIngredients[item]) {
 
-        notify("You already added that.");
+        notify(
+            "You already added that."
+        );
 
         return;
+
     }
+
 
     if (inventory[item] <= 0) {
 
-        notify("You don't have any " + item + ".");
+        notify(
+            "You don't have any " + item + "."
+        );
 
         return;
+
     }
+
 
     inventory[item]--;
 
     bowlIngredients[item] = true;
 
+
     updateInventory();
 
     updateBowlVisual();
+
 
     notify(
         "Added " + item + " to the bowl."
     );
 
+
     checkBowl();
 
 }
+
+
+/* =========================================================
+   BOWL VISUAL
+   ========================================================= */
 
 function updateBowlVisual() {
 
     let symbols = "";
 
-    if (bowlIngredients.flour)
+
+    if (bowlIngredients.flour) {
+
         symbols += "🌾";
 
-    if (bowlIngredients.milk)
+    }
+
+
+    if (bowlIngredients.milk) {
+
         symbols += "🥛";
 
-    if (bowlIngredients.chocolate)
+    }
+
+
+    if (bowlIngredients.chocolate) {
+
         symbols += "🍫";
 
-    if (bowlIngredients.butter)
+    }
+
+
+    if (bowlIngredients.butter) {
+
         symbols += "🧈";
+
+    }
+
 
     document.getElementById("bowlContents")
         .textContent = symbols;
 
 }
 
+
+/* =========================================================
+   CHECK RECIPE
+   ========================================================= */
+
 function checkBowl() {
 
     if (
+
         bowlIngredients.flour &&
+
         bowlIngredients.milk &&
+
         bowlIngredients.chocolate &&
+
         bowlIngredients.butter
+
     ) {
 
         bowlReady = true;
 
+
         document.getElementById("questText")
             .innerHTML =
-            "Everything is in the bowl.<br><br>" +
-            "Hold your mouse on the bowl to mix the batter.";
+
+            "Everything is in the bowl."
+            + "<br><br>"
+            + "Hold your mouse on the bowl "
+            + "to mix the batter.";
+
 
         notify(
-            "Everything is ready. Time to mix!"
+            "Everything is ready!"
         );
 
     }
 
 }
 
+
 /* =========================================================
-   HOLD TO MIX
+   MIXING
    ========================================================= */
 
 let mixTimer = null;
 
-bowl.addEventListener("mousedown", function() {
 
-    if (!bowlReady || mixing || batterReady)
-        return;
+bowl.addEventListener(
+    "mousedown",
+    function() {
 
-    mixing = true;
+        if (
+            !bowlReady ||
+            mixing ||
+            batterReady
+        ) {
 
-    mixingProgress = 0;
-
-    document.getElementById("mixProgress")
-        .style.display = "block";
-
-    mixTimer = setInterval(() => {
-
-        mixingProgress +=
-            upgrades.bowl ? 2 : 1;
-
-        document.getElementById("mixFill")
-            .style.width =
-            mixingProgress + "%";
-
-        if (mixingProgress >= 100) {
-
-            clearInterval(mixTimer);
-
-            mixing = false;
-
-            batterReady = true;
-
-            document.getElementById("mixProgress")
-                .style.display = "none";
-
-            finishMixing();
+            return;
 
         }
 
-    }, 80);
 
-});
+        mixing = true;
 
-document.addEventListener("mouseup", function() {
+        mixingProgress = 0;
 
-    if (mixing) {
 
-        clearInterval(mixTimer);
+        document.getElementById("mixProgress")
+            .style.display = "block";
 
-        mixing = false;
 
-        notify("You stopped mixing.");
+        mixTimer =
+            setInterval(function() {
+
+                mixingProgress +=
+                    upgrades.bowl
+                    ? 2
+                    : 1;
+
+
+                document.getElementById("mixFill")
+                    .style.width =
+                    mixingProgress + "%";
+
+
+                if (mixingProgress >= 100) {
+
+                    clearInterval(mixTimer);
+
+                    mixTimer = null;
+
+                    mixing = false;
+
+                    batterReady = true;
+
+
+                    document.getElementById(
+                        "mixProgress"
+                    ).style.display = "none";
+
+
+                    finishMixing();
+
+                }
+
+            }, 80);
 
     }
+);
 
-});
+
+/* Stop mixing when mouse released */
+
+document.addEventListener(
+    "mouseup",
+    function() {
+
+        if (mixing) {
+
+            clearInterval(mixTimer);
+
+            mixTimer = null;
+
+            mixing = false;
+
+            notify(
+                "You stopped mixing."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FINISHED BATTER
+   ========================================================= */
 
 function finishMixing() {
 
     document.getElementById("bowlContents")
         .textContent = "🍫";
 
+
     document.getElementById("questText")
         .innerHTML =
-        "The batter is ready!<br><br>" +
-        "Drag the batter into a baking pan.";
+
+        "The batter is ready!"
+        + "<br><br>"
+        + "Double-click the bowl to put "
+        + "the batter into a pan.";
+
 
     notify(
         "The batter is perfectly mixed!"
@@ -1537,64 +3036,94 @@ function finishMixing() {
 
 }
 
+
 /* =========================================================
    CREATE PAN
    ========================================================= */
 
-bowl.addEventListener("dblclick", function() {
+bowl.addEventListener(
+    "dblclick",
+    function() {
 
-    if (!batterReady || panReady)
-        return;
+        if (!batterReady || panReady) {
 
-    panReady = true;
+            return;
 
-    batterReady = false;
+        }
 
-    document.getElementById("bowlContents")
-        .textContent = "";
 
-    createPan();
+        panReady = true;
 
-});
+        batterReady = false;
+
+
+        document.getElementById(
+            "bowlContents"
+        ).textContent = "";
+
+
+        createPan();
+
+    }
+);
+
 
 function createPan() {
 
     const pan =
         document.createElement("div");
 
-    pan.className = "draggable";
 
-    pan.id = "pan";
+    pan.className =
+        "draggable";
 
-    pan.draggable = true;
 
-    pan.style.left = "310px";
-    pan.style.top = "170px";
+    pan.id =
+        "pan";
+
+
+    pan.draggable =
+        true;
+
+
+    pan.style.left =
+        "310px";
+
+
+    pan.style.top =
+        "170px";
+
 
     pan.innerHTML =
-        "🍫<div class='itemName'>Brownie Pan</div>";
+        "🍫"
+        + "<div class='itemName'>Brownie Pan</div>";
+
 
     document.getElementById("floor")
         .appendChild(pan);
 
-    pan.addEventListener("dragstart", function(event) {
 
-        event.dataTransfer.setData(
-            "text/plain",
-            "pan"
-        );
+    pan.addEventListener(
+        "dragstart",
+        function(event) {
 
-    });
+            event.dataTransfer.setData(
+                "text/plain",
+                "pan"
+            );
+
+        }
+    );
+
 
     document.getElementById("questText")
         .innerHTML =
-        "Drag the brownie pan into the oven.";
 
-    notify(
-        "You made a pan of brownie batter!"
-    );
+        "Drag the brownie pan "
+        + "into the oven.";
 
 }
+
 
 /* =========================================================
    PAN → OVEN
@@ -1603,31 +3132,53 @@ function createPan() {
 const oven =
     document.getElementById("oven");
 
-oven.addEventListener("dragover", function(event) {
 
-    event.preventDefault();
+oven.addEventListener(
+    "dragover",
+    function(event) {
 
-});
+        event.preventDefault();
 
-oven.addEventListener("drop", function(event) {
+    }
+);
 
-    event.preventDefault();
 
-    const item =
-        event.dataTransfer.getData("text/plain");
+oven.addEventListener(
+    "drop",
+    function(event) {
 
-    if (item !== "pan")
-        return;
+        event.preventDefault();
 
-    const pan =
-        document.getElementById("pan");
 
-    if (pan)
-        pan.remove();
+        const item =
+            event.dataTransfer.getData("text/plain");
 
-    startBaking();
 
-});
+        if (item !== "pan") {
+
+            return;
+
+        }
+
+
+        const pan =
+            document.getElementById("pan");
+
+
+        if (pan) {
+
+            pan.remove();
+
+        }
+
+
+        panReady = false;
+
+        startBaking();
+
+    }
+);
+
 
 /* =========================================================
    BAKING
@@ -1635,36 +3186,53 @@ oven.addEventListener("drop", function(event) {
 
 function startBaking() {
 
-    if (baking)
+    if (baking) {
+
         return;
+
+    }
+
 
     baking = true;
 
     bakingProgress = 0;
 
+
     document.getElementById("ovenGlow")
         .style.display = "block";
 
+
     document.getElementById("questText")
         .innerHTML =
-        "The brownies are baking...<br><br>" +
-        "Take your time.";
+
+        "The brownies are baking..."
+        + "<br><br>"
+        + "Take your time.";
+
 
     notify(
         "The oven is warming up..."
     );
 
+
     const bakingSpeed =
-        upgrades.oven ? 1.4 : 1;
+        upgrades.oven
+        ? 1.4
+        : 1;
+
 
     const bakeTimer =
-        setInterval(() => {
+        setInterval(function() {
 
-            bakingProgress += bakingSpeed;
+            bakingProgress +=
+                bakingSpeed;
 
-            document.getElementById("ovenFill")
-                .style.width =
+
+            document.getElementById(
+                "ovenFill"
+            ).style.width =
                 bakingProgress + "%";
+
 
             if (bakingProgress >= 100) {
 
@@ -1674,8 +3242,11 @@ function startBaking() {
 
                 browniesReady = true;
 
-                document.getElementById("ovenGlow")
-                    .style.display = "none";
+
+                document.getElementById(
+                    "ovenGlow"
+                ).style.display = "none";
+
 
                 finishBaking();
 
@@ -1685,63 +3256,90 @@ function startBaking() {
 
 }
 
+
+/* =========================================================
+   FINISHED BROWNIES
+   ========================================================= */
+
 function finishBaking() {
 
     document.getElementById("questText")
         .innerHTML =
-        "Your brownies are ready!<br><br>" +
-        "Drag them to the cooling rack.";
+
+        "Your brownies are ready!"
+        + "<br><br>"
+        + "Drag them to the cooling rack.";
+
 
     createBrownieTray();
 
+
     notify(
-        "Ding! Your first brownies are ready!"
+        "Ding! Your brownies are ready!"
     );
 
 }
 
-/* =========================================================
-   BROWNIE TRAY
-   ========================================================= */
 
 function createBrownieTray() {
 
     const tray =
         document.createElement("div");
 
-    tray.className = "draggable";
 
-    tray.id = "brownieTray";
+    tray.className =
+        "draggable";
 
-    tray.draggable = true;
 
-    tray.style.left = "470px";
-    tray.style.top = "200px";
+    tray.id =
+        "brownieTray";
+
+
+    tray.draggable =
+        true;
+
+
+    tray.style.left =
+        "470px";
+
+
+    tray.style.top =
+        "200px";
+
 
     tray.innerHTML =
-        "🍫🍫🍫" +
-        "<div class='itemName'>Fresh Brownies</div>";
+        "🍫🍫🍫"
+        + "<div class='itemName'>Fresh Brownies</div>";
+
 
     document.getElementById("floor")
         .appendChild(tray);
 
-    tray.addEventListener("dragstart", function(event) {
 
-        event.dataTransfer.setData(
-            "text/plain",
-            "brownies"
-        );
+    tray.addEventListener(
+        "dragstart",
+        function(event) {
 
-    });
+            event.dataTransfer.setData(
+                "text/plain",
+                "brownies"
+            );
+
+        }
+    );
 
 }
 
+
 /* =========================================================
-   COOLING
+   COOLING RACK
    ========================================================= */
 
 const coolingRack =
-    document.getElementById("coolingRack");
+    document.getElementById(
+        "coolingRack"
+    );
+
 
 coolingRack.addEventListener(
     "dragover",
@@ -1752,53 +3350,84 @@ coolingRack.addEventListener(
     }
 );
 
+
 coolingRack.addEventListener(
     "drop",
     function(event) {
 
         event.preventDefault();
 
-        const item =
-            event.dataTransfer.getData("text/plain");
 
-        if (item !== "brownies")
+        const item =
+            event.dataTransfer.getData(
+                "text/plain"
+            );
+
+
+        if (item !== "brownies") {
+
             return;
 
-        const tray =
-            document.getElementById("brownieTray");
+        }
 
-        if (tray)
+
+        const tray =
+            document.getElementById(
+                "brownieTray"
+            );
+
+
+        if (tray) {
+
             tray.remove();
+
+        }
+
 
         browniesReady = true;
 
+
         document.getElementById("questText")
             .innerHTML =
-            "The brownies are cooling.<br><br>" +
-            "When you're ready, package them.";
+
+            "The brownies are cooling."
+            + "<br><br>"
+            + "Wait a little while.";
+
 
         notify(
             "The brownies are cooling down."
         );
 
-        setTimeout(() => {
 
-            document.getElementById("questText")
-                .innerHTML =
-                "The brownies are cool!<br><br>" +
-                "You need a box to package them.";
+        setTimeout(
+            function() {
 
-        }, 3000);
+                document.getElementById(
+                    "questText"
+                ).innerHTML =
+
+                    "The brownies are cool!"
+                    + "<br><br>"
+                    + "Drag them to the packaging table.";
+
+            },
+            3000
+        );
 
     }
 );
+
 
 /* =========================================================
    PACKAGING
    ========================================================= */
 
 const packageArea =
-    document.getElementById("packageArea");
+    document.getElementById(
+        "packageArea"
+    );
+
 
 packageArea.addEventListener(
     "dragover",
@@ -1809,17 +3438,37 @@ packageArea.addEventListener(
     }
 );
 
+
 packageArea.addEventListener(
     "drop",
     function(event) {
 
         event.preventDefault();
 
-        const item =
-            event.dataTransfer.getData("text/plain");
 
-        if (item !== "brownies")
+        const item =
+            event.dataTransfer.getData(
+                "text/plain"
+            );
+
+
+        if (item !== "brownies") {
+
             return;
+
+        }
+
+
+        if (!browniesReady) {
+
+            notify(
+                "The brownies aren't ready yet."
+            );
+
+            return;
+
+        }
+
 
         if (inventory.boxes <= 0) {
 
@@ -1828,26 +3477,43 @@ packageArea.addEventListener(
             );
 
             return;
+
         }
 
+
         inventory.boxes--;
+
 
         packagedBrownie = true;
 
         browniesReady = false;
 
-        const tray =
-            document.getElementById("brownieTray");
 
-        if (tray)
+        const tray =
+            document.getElementById(
+                "brownieTray"
+            );
+
+
+        if (tray) {
+
             tray.remove();
 
-        packageArea.textContent = "🍫📦";
+        }
 
-        document.getElementById("questText")
-            .innerHTML =
-            "Your brownies are boxed!<br><br>" +
-            "Hold your mouse on the package to finish sealing it.";
+
+        packageArea.textContent =
+            "🍫📦";
+
+
+        document.getElementById(
+            "questText"
+        ).innerHTML =
+
+            "The brownies are in the box!"
+            + "<br><br>"
+            + "Hold your mouse on the package "
+            + "to seal it.";
 
         notify(
             "Brownies placed in the box!"
@@ -1856,30 +3522,43 @@ packageArea.addEventListener(
     }
 );
 
+
 /* =========================================================
-   HOLD TO PACKAGE
+   HOLD TO SEAL PACKAGE
    ========================================================= */
 
 let packageTimer = null;
+
 let packageProgress = 0;
+
 
 packageArea.addEventListener(
     "mousedown",
     function() {
 
-        if (!packagedBrownie)
+        if (!packagedBrownie) {
+
             return;
+
+        }
+
 
         packageProgress = 0;
 
+
         packageTimer =
-            setInterval(() => {
+            setInterval(function() {
 
                 packageProgress += 3;
 
+
                 if (packageProgress >= 100) {
 
-                    clearInterval(packageTimer);
+                    clearInterval(
+                        packageTimer
+                    );
+
+                    packageTimer = null;
 
                     packageFinished();
 
@@ -1890,29 +3569,44 @@ packageArea.addEventListener(
     }
 );
 
-document.addEventListener("mouseup", function() {
 
-    if (packageTimer) {
+document.addEventListener(
+    "mouseup",
+    function() {
 
-        clearInterval(packageTimer);
+        if (packageTimer) {
 
-        packageTimer = null;
+            clearInterval(
+                packageTimer
+            );
+
+            packageTimer = null;
+
+        }
 
     }
+);
 
-});
 
 function packageFinished() {
 
+    packageSealed = true;
+
     packageTimer = null;
+
 
     packageArea.textContent =
         "📦🍫";
 
-    document.getElementById("questText")
-        .innerHTML =
-        "Beautifully packaged!<br><br>" +
-        "Take it to the shop and sell it.";
+
+    document.getElementById(
+        "questText"
+    ).innerHTML =
+
+        "The package is sealed!"
+        + "<br><br>"
+        + "Click the shop counter to sell it.";
+
 
     notify(
         "Package sealed!"
@@ -1920,34 +3614,50 @@ function packageFinished() {
 
 }
 
+
 /* =========================================================
    SELL
    ========================================================= */
 
 function sellPackagedBrownie() {
 
-    if (!packagedBrownie) {
+    if (
+        !packagedBrownie ||
+        !packageSealed
+    ) {
 
         notify(
-            "You don't have a packaged brownie to sell."
+            "You need a sealed brownie package."
         );
 
         return;
 
     }
 
+
     money += 12;
+
 
     packagedBrownie = false;
 
-    packageArea.textContent = "📦";
+    packageSealed = false;
+
+
+    packageArea.textContent =
+        "📦";
+
 
     updateMoney();
 
-    document.getElementById("questText")
-        .innerHTML =
-        "🎉 First brownie sold!<br><br>" +
-        "Buy more ingredients and make another one.";
+
+    document.getElementById(
+        "questText"
+    ).innerHTML =
+
+        "🎉 Brownie sold!"
+        + "<br><br>"
+        + "Buy ingredients and make another one.";
+
 
     notify(
         "Brownie sold for $12!"
@@ -1955,29 +3665,35 @@ function sellPackagedBrownie() {
 
 }
 
+
 /* =========================================================
    HELP
    ========================================================= */
 
 function openHelp() {
 
-    document.getElementById("helpPanel")
-        .style.display = "block";
+    document.getElementById(
+        "helpPanel"
+    ).style.display = "block";
 
 }
+
 
 function closeHelp() {
 
-    document.getElementById("helpPanel")
-        .style.display = "none";
+    document.getElementById(
+        "helpPanel"
+    ).style.display = "none";
 
 }
 
+
 /* =========================================================
-   STARTUP
+   START GAME
    ========================================================= */
 
 updateMoney();
+
 updateInventory();
 
 </script>
