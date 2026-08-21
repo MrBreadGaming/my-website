@@ -3511,34 +3511,6 @@ bakeButton.addEventListener(
 
 function finishBaking() {
 
-    oven.classList.remove("baking");
-
-    ovenDisplay.textContent = "DONE!";
-
-    // IMPORTANT:
-    // Keep the brownie/pan in the oven after baking.
-    // Do NOT remove it or reset it here.
-    game.pan.baked = true;
-    game.pan.filled = true;
-
-    bakeButton.disabled = false;
-
-    tutorial(
-        "Brownie finished!",
-        "Drag the baked brownie/pan onto the cooling rack."
-    );
-
-    notify(
-        "Fresh brownie finished baking! 🍫"
-    );
-
-    particles(
-        oven.getBoundingClientRect().left + 100,
-        oven.getBoundingClientRect().top + 90,
-        "🍫"
-    );
-}
-
     game.baking =
         false;
 
